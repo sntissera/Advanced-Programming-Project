@@ -5,15 +5,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Home Page </title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="static/css/style.css">
     <link href='https://fonts.googleapis.com/css?family=Comfortaa' rel='stylesheet'>
 </head>
-
 
 
 <body>
     <center>
     <h1>Analyze mithocondrial DNA</h1>
+    <hr width="100%" size="4" color="#2c2c2c" noshade>
+    <p>&emsp;</p>
+
+    <div class ="containter">
+        <h2>Input the mithochondrial DNA</h2>
+        <p>paste the Genome sequence...</p>
+        <p>...or upload the Genome file</p>
+        <form action ="/upload" method="post" entype="multipart/form-data">
+            <input type="file" name="file">
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+    <p>&emsp;</p>
+    <hr width="100%" size="4" color="#2c2c2c" noshade>
+
+    <p>&emsp;</p>
+    <h2>Select the type of analysis</h2>
+    <hr width="40%" size="1" color="white" noshade>
+    <h3>Learn more about your file</h3>
+    <p>Count the number of genomes in the file</p> 
+    <p>Display all the names</p>
+    <p>Access sequence based of name</p> 
+    <p>&emsp;</p>
+    <hr width="40%" size="1" color="white" noshade>
+
+    
+    <h3>Learn more about individual sequence</h3>
+    <p>GC Count</p>
+    <p>Find subsequnnce based on index</p>
+    <p>Calculate seq length</p>
+    <p>Find a given motif and count the occurance </p>
+    <p>&emsp;</p>
+    <hr width="40%" size="1" color="white" noshade>
+
+    <h3>Compare sequences</h3>
+    <p>&emsp;</p>
+
+    <hr width="100%" size="4" color="#2c2c2c" noshade>
+    <p>&emsp;</p>
+    <h2>Visualize your results</h2>
+    <hr width="100%" size="4" color="#2c2c2c" noshade>
+
+    <p>Advanced Programming - project - BSc Genomics UNIBO</p>
     </center>
 </body>
 
