@@ -1,0 +1,6 @@
+body {background-color: black; font-family: 'Comfortaa';font-size: 1rem;}
+h1 {color: white;}
+h2 {color: white;}
+p {color: white}
+a {text-decoration: none; color:white}
+a:active {color: red;}
