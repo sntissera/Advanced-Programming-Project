@@ -1,7 +1,7 @@
 from Bio.Seq import Seq
 from Bio.SeqUtils import nt_search
 
-class mitochondrial_dna: 
+class MitochondrialDna: 
     def __init__ (self, sequence:str): 
         self._sequence = Seq(sequence)
     
@@ -29,7 +29,7 @@ class mitochondrial_dna:
         print('Sequence length: ', len(seq))
 
 
-class genomic_motif (mitochondrial_dna): 
+class GenomicMotif (MitochondrialDna): 
     '''Represents sequence motifs'''
 
     def __init__ (self, motif:str, sequence:str):
@@ -54,7 +54,7 @@ class genomic_motif (mitochondrial_dna):
 
 
 #For testing the code    
-seq1 = mitochondrial_dna('''CCGGCAGGAACTGCTAACACATAATCGGCGTTTTGAAGTTCGCAAGGAGAGTGCCTTCCGCGTTCCCGGCTTCGTATCAA
+seq1 = MitochondrialDna('''CCGGCAGGAACTGCTAACACATAATCGGCGTTTTGAAGTTCGCAAGGAGAGTGCCTTCCGCGTTCCCGGCTTCGTATCAA
 GATATGGGACAAGGAGGGACTGTGACATTTACATGTTACGACCCCCAGTAGCTTAAATACAACGGTTTAACTACAATAGTCGGCCGGGCAGGGTTCGGATAGGTTTAC
 AACTACTTTTCAACATTCTCGTGATTACTAAAGCAGTCAGGCAGAAGTGATCGAAGCGCTCTTAGATAGTGCGCCAGACCCGCTGAGCCCGCGGCATACTAGCAGTGA
 ACCACGTTAGTACTGCTTGTATCGATTCGATACCCCTGAGGCCCGGACAATCTTCAGCCTTTCATAGAGAGTAAGTCTCATTTGAATTATAAACCTCGTTTATCCGTA
@@ -70,7 +70,7 @@ seq1.seq_len()
 subseq = seq1.extract_seq()
 seq1.gc_content(subseq)
 seq1.seq_len(subseq)
-motif1 = genomic_motif('ATG',subseq)
+motif1 = GenomicMotif('ATG',subseq)
 print(motif1.search_motif())
 motif1.count_motif()
 
