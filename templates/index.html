@@ -24,17 +24,16 @@
                 {{form.hidden_tag()}}
                 {{form.dna.label()}}
                 {{form.dna()}}
-        
                 {{form.submit()}}
             </form>
             <br/>
         <p>...or upload the Genome file</p>
 
-            <form action ="/upload" method="post" entype="multipart/form-data">
-                <input type="file" name="file">
-                <input type="submit" value="Submit">
-            </form>
-
+        <form method="POST" action='/upload1' enctype="multipart/form-data">
+            {{form.hidden_tag()}}
+            {{form.file()}}
+            {{form.submit()}}
+        </form>
 
             <br/>
     <hr width="100%" size="4" color="#2c2c2c" noshade>
