@@ -1,16 +1,13 @@
 import pandas as pd
 
 class MitochondrialDNAParser:
-  
 
     def __init__(self, file_path):
-      
         self.file_path = file_path
         self.data = None
         self._parse_fasta()
 
     def _parse_fasta(self): # parsec files & stores as panda
-       
         sequence_ids = []
         descriptions = []
         sequences = []
@@ -48,18 +45,14 @@ class MitochondrialDNAParser:
         })
 
     def get_data(self):
-       
         return self.data
 
     def get_sequence_by_id(self, sequence_id):
-      
         result = self.data[self.data["Sequence ID"] == sequence_id]
         if not result.empty:
             return result["Sequence"].values[0]
         return None
 
     def get_all_sequences(self):
-     
-        return self.data["Sequence"].tolist()
-
+        return self.data["Sequence ID"].tolist()
 

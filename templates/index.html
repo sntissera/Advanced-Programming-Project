@@ -1,69 +1,24 @@
-<!DOCTYPE html>
-<html>
+{% extends 'base.html' %}
+{% block title %}Home Page{% endblock %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Home Page </title>
-    <link rel="stylesheet" href="static/css/style.css">
-    <link href='https://fonts.googleapis.com/css?family=Comfortaa' rel='stylesheet'>
-    <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">-->
-</head>
+{% block content %}   
 
+    <p>Analyze your mithocondrial genomes! </br> Upload your file and then choose the type of analysis you want to do.<br>
+        You can perfom single genome analysis, including: extracting a subsequence, calculating the GC content or length and
+          searching for motifs.</br>
+          OR</br>
+        Compare different sequences of mitochondrial DNA and find out: ...  
+        </p>
+    </br>
+    <hr width="50%" size="4" color="#2c2c2c" noshade>
 
-<body>
-    <center>
-    <h1>Analyze mithocondrial DNA</h1>
-    <hr width="100%" size="4" color="#2c2c2c" noshade>
-    <br/>
-
-    
-        <h2>Input the mithochondrial DNA</h2>
-        <p>paste the Genome sequence...</p>
-            <form method="POST">
-                {{form.hidden_tag()}}
-                {{form.dna.label()}}
-                {{form.dna()}}
-                {{form.submit()}}
-            </form>
-            <br/>
-        <p>...or upload the Genome file</p>
-
-        <form method="POST" action='/upload1' enctype="multipart/form-data">
-            {{form.hidden_tag()}}
-            {{form.file()}}
-            {{form.submit()}}
-        </form>
-
-            <br/>
-    <hr width="100%" size="4" color="#2c2c2c" noshade>
-
-    <br/>
-    <h2>Select the type of analysis</h2>
-    <hr width="40%" size="1" color="white" noshade>
-    <h3>Learn more about your file</h3>
-    <p>Count the number of genomes in the file</p> 
-    <p>Display all the names</p>
-    <p>Access sequence based of name</p> 
-    <br/>
-    <hr width="40%" size="1" color="white" noshade>
-
-    
-    <h3>Learn more about individual sequence</h3>
-    <p>GC Count</p>
-    <p>Find subsequnnce based on index</p>
-    <p>Calculate seq length</p>
-    <p>Find a given motif and count the occurance </p>
-    <br/>
-    <hr width="40%" size="1" color="white" noshade>
-
-    <h3>Compare sequences</h3>
-    <br/>
-
-    <hr width="100%" size="4" color="#2c2c2c" noshade>
-    <p>Advanced Programming - project - BSc Genomics UNIBO</p>
-    </center>
-</body>
+    <h3 style="color: #dc3545;">Upload the Genome file</h3></br>
+    <form method='POST' enctype=multipart/form-data>
+        <input type=file name=file>
+        <input type=submit value=Submit>
+    </form></br>
+    <p><i>File extensions supported: .fasta, .txt</i></p></br>
 
 
-</html>
+
+{% endblock %}
