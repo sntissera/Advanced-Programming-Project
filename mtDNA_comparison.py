@@ -109,7 +109,7 @@ class AlignmentAnalysis:
         matches_str = "".join(matches)
         aligned_seq2_str = "".join(visual_seq2)
 
-        # Print the alignment
+        # print the alignment
         print(aligned_seq1_str)
         print(matches_str)
         print(aligned_seq2_str)
