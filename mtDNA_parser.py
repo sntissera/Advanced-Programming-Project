@@ -56,3 +56,4 @@ class MitochondrialDNAParser:
     def get_all_sequences(self):
         return self.data["Sequence ID"].tolist()
 
+
