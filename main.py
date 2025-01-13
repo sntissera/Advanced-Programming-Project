@@ -77,7 +77,7 @@ def show_results():
    genome_seq = genomes.get_sequence_by_id(seq_id)
    genome_analysis = MitochondrialDna(genome_seq)
 
-   if analysis_type == "gc_content":
+   if analysis_type == "GC":
       result = genome_analysis.gc_content()
    elif analysis_type == "length":
       result = genome_analysis.seq_len()
