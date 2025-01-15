@@ -19,14 +19,14 @@ class MitochondrialDna:
         print('G Count: ',g)
         print('C count: ',c)
         print('GC Percentage: ', ((g+c)/len(seq))*100)
-        return f"{g}\n{c}\n{((g+c)/len(seq))*100}"
+        return f"GC Percentage: {((g+c)/len(seq))*100}"
     
     def seq_len(self, sequence = None): 
         '''Calculates the length of a given sequence'''
 
         seq = sequence if sequence else self._sequence
         print('Sequence length: ', len(seq))
-        return len(seq)
+        return f"Sequence length: {len(seq)}"
 
 
 class GenomicMotif (MitochondrialDna): 
@@ -52,7 +52,3 @@ class GenomicMotif (MitochondrialDna):
         print ('Motif count: ', motif_count)
         print('Distribution through out the sequence(%): ', motif_count/seqlen*100)
         return f"{motif_count}\n{motif_count/seqlen*100}"
-
-
-
-
