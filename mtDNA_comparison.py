@@ -28,8 +28,8 @@ class ComparativeAnalysis:
             }
             print(f"{seq_id}: Length = {seq_length} bases, GC Content = {gc_content:.2f}%")
         return summaries
-    
-      def summarize_findings(self):
+        
+    def summarize_findings(self):
         """
         Prints summary findings such as longest/shortest sequence and highest GC content.
         """
