@@ -2,47 +2,64 @@ from Bio.Seq import Seq
 from Bio.SeqUtils import nt_search
 
 class MitochondrialDna: 
-    def __init__ (self, sequence:str): 
-        self._sequence = Seq(sequence.upper())
+    def __init__ (self, sequence): 
+        self._sequence = Seq(sequence)
     
     def extract_seq(self, start, end):
         '''Extracts subsequences from genomic sequences'''
         if start < 1 or end > len(self._sequence) or start > end:
             print ("Invalid start or end position.")
-        return f'Sub sequences: {self._sequence[start-1:end]}'
+        return f'Sub sequence: {self._sequence[start-1:end]}'
         
-
     def gc_content(self, sequence = None): 
         '''Calculates the GC content in a given sequence'''
 
-        seq = sequence if sequence else self._sequence
+        seq = sequence if sequence != None else self._sequence
+        valid_bases = ['G', 'C', 'A', 'T']
+        filtered_seq = [base for base in seq if base in valid_bases]
+        filtered_length = len(filtered_seq)
+    
+        if filtered_length == 0:
+            return "Invalid sequence or no valid bases found."
+
         g = seq.count('G')
         c = seq.count('C')
-        gc_percentage = (g+c)/len(seq)*100
-        return f'G count: {g}, C count: {c} GC Percentage: {gc_percentage}'
+        gc_percentage = ((g+c)/filtered_length)*100
+        return f'G count: {g}, C count: {c}, GC Percentage: {gc_percentage}'
     
     def seq_len(self, sequence = None): 
         '''Calculates the length of a given sequence'''
 
-        seq = sequence if sequence else self._sequence
-        return f'Length of the sequence: {len(seq)}'
+        seq = sequence if sequence != None else self._sequence
+        valid_bases = ['G', 'C', 'A', 'T']
+        filtered_seq = [base for base in seq if base in valid_bases]
+        filtered_length = len(filtered_seq)
+    
+        if filtered_length == 0:
+            return "Invalid sequence or no valid bases found."
+
+        return f'Length of the sequence: {filtered_length}'
 
 
 class GenomicMotif (MitochondrialDna): 
     '''Represents sequence motifs'''
 
-    def __init__ (self, motif:str, sequence:str):
+    def __init__ (self, motif:str, sequence):
         super().__init__(sequence)
         self.motif = motif.upper()
-        
+       
     def search_motif(self): 
         '''Searches for motifs within mitochondrial DNA'''
-        positions = nt_search(str(self._sequence),self.motif)
+        sequence_str = str(self._sequence)
+        positions = nt_search(sequence_str, self.motif)
+        
         if len(positions) <= 1:
             return 'No motifs found in the selected sequence'
         else:
             motif_count = len(positions[1:]) #Counts motif occurrences
-            seq_len = len(self._sequence)
+            seq_len = len(sequence_str)
             distribution = (motif_count/seq_len)*100 if seq_len > 0 else 0 #analyse motif distribution across sequences
-            return positions[1:]
-            return f"Motif count: {motif_count}\n Percentage distribution: {distribution}"
+            location = positions[1:]
+            return f"Motifs located at nucleotides:{location}, Motif count: {motif_count}, Percentage distribution: {distribution}"
+
+
