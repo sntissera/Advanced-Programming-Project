@@ -11,32 +11,21 @@
         </p>
     </br>
     <hr width="50%" size="4" color="#2c2c2c" noshade>
-    <div class="container text-center">
-        <div class="row align-items-start">
+        <h3 style="color: #dc3545;">Upload the Genome file</h3></br>
 
-            <div class="col">
-                <h3 style="color: #dc3545;">Paste Genome Sequence</h3></br>
+        <form method='POST' enctype="multipart/form-data">
+            <input type=file name=file required>
+            <input type=submit value=Submit>
+        </form></br>
 
-                <form method="POST">
-                    <p>Paste sequence here:</p>
-                    <textarea name="seq_paste"  class="form-control" rows="5" style="resize: vertical;"></textarea><br/>
-                    <input type=submit value=Submit>
-                </form>
-            </div>
-
-            <div class="col">
-                <h3 style="color: #dc3545;">Upload the Genome file</h3></br>
-
-                <form method='POST' enctype="multipart/form-data">
-                    <input type=file name=file required>
-                    <input type=submit value=Submit>
-                </form></br>
-                <p><i>File extensions supported: .fasta, .txt</i></p></br>
-            </div>
+        <p class="small text-center"><i>File extensions supported: .fasta, .txt</i></p>
+        
+        <div class="container-sm mx-auto mt-3" style="max-width: 600px;">
+            {% for message in get_flashed_messages() %}
+                <div class="alert alert-warning text-center" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
         </div>
-    </div>
-   
-
-
 
 {% endblock %}

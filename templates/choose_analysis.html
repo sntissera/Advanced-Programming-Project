@@ -2,70 +2,41 @@
 {% block title %}Choose Analysis{% endblock %}
 
 {% block content %}
-      <p > The names of genomes present in the file are:</p>
-      <p style="color:#ffc107;">{{result}}</p> </br/>
-      
+<p>The names of genomes present in the file are:</p>
+<p style="color:#bee3ff;">{{result_names}}</p> <br/>
 
-      <h3>What type of analysis do you want to do?</h3> 
+<hr width="100%" size="4" color="#2c2c2c" noshade>                        
 
-      <div class="container text-center">
-            <div class="row align-items-start">
+<h3 style="color: #dc3545;">How many genomes do you want to analyze?</h3>  <br/>
 
-              <div class="col">
-                  <h4 style="color: #dc3545;">Individual genome analysis</h4>
-                  <p>Select the name of the genome you want to analyze:</p>
+      <form method="POST">
+            <p>Select the number of genomes from the file to be analyzed:</p>
 
-                   <form method="POST">
-                        <p>Genome name: <input name = "seq_ID_1"></p>
-                        <hr width="100%" size="4" color="#2c2c2c" noshade>                        
+            <div class="container-sm mx-auto mt-3" style="max-width: 600px;">
+                  {% for message in get_flashed_messages() %}
+                      <div class="alert alert-warning text-center" role="alert">
+                          {{ message }}
+                      </div>
+                  {% endfor %}
+            </div>
 
-                        <p>Select the analysis:</p>
-
-                        <p><input type="radio" name="analysis_type" value="subseq"> Extract subsequence</p>
-                        <p>Start at index: <input name = "start"></p>
-                        <p>Stop at index: <input name = "stop"></p>
-                        <p><input type="radio" name="analysis_type" value="GC"> Calculate GC content</p>
-                        <p><input type="radio" name="analysis_type" value="length"> Calculate sequence length</p>
-                        <p><input type="radio" name="analysis_type" value="motif"> Seach for given motif and count occurences</p> 
-                        <p>Motif sequence: <input name = "motif"></p>
-
-                        <button type="button" onclick="clearSelection(['analysis_type'])"> Clear Selection</button>
+                        <p><input type="radio" name="genomes_number" value="one"> One genome</p>
+                        <p><input type="radio" name="genomes_number" value="two"> Two genomes</p>
+                        <p><input type="radio" name="genomes_number" value="all"> All genomes</p>
+                        <button type="button" onclick="clearSelection(['genomes_number'])"> Clear Selection</button>
                         <input type=submit value=Submit>
-                   </form>
-              </div>
+      </form>
 
-              <div class="col">
-                  <h4 style="color: #dc3545;">Compare 2 genomes</h4>
-                  <p>Select the names of the genomes you want to analyze:</p>
-                  <form method="POST">
-                        <p>Genome 1: <input name = "seq_ID_1"></p>
-                        <p>Genome 2: <input name = "seq_ID_"></p>
-                        <hr width="100%" size="4" color="#2c2c2c" noshade>
-
-                        <p>Select the analysis:</p>
-
-                        <p><input type="radio" name="analysis_type" value="general"> General comparison</p>
-                        <button type="button" onclick="clearSelection(['analysis_type'])"> Clear Selection</button>
-                        <input type=submit value=Submit>
-                   </form>
-              </div>
-      <p></p>     
-            
-      
-      <script>
-      const clearSelection = (names) => {
-             names.forEach((name) => {
-                  const radioBtns = document.querySelectorAll("input[type='radio'][name='" + name + "']");
-                  radioBtns.forEach((radioBtn) => {
-            if (radioBtn.checked === true) {
-                  radioBtn.checked = false;
-                  }
-               });
+<script>
+const clearSelection = (names) => {
+       names.forEach((name) => {
+            const radioBtns = document.querySelectorAll("input[type='radio'][name='" + name + "']");
+            radioBtns.forEach((radioBtn) => {
+                if (radioBtn.checked === true) {
+                    radioBtn.checked = false;
+                }
             });
-      };    
-      </script>
-
-
+        });
+};
+</script>
 {% endblock %}
-
-

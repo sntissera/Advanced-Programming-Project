@@ -1,9 +1,9 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 from werkzeug.utils import secure_filename
 from mtDNA_parser import MitochondrialDNAParser
 from mtDNA import MitochondrialDna, GenomicMotif
-# from mtDNA_comparison import ComparativeAnalysis, ConservedMotifs, AlignmentAnalysis
+from mtDNA_comparison import ComparativeAnalysis, ConservedMotifs, AlignmentAnalysis
 
 UPLOAD_FOLDER = './input_files'
 ALLOWED_EXTENSIONS = {'fasta', 'txt'}
@@ -16,7 +16,6 @@ app.secret_key = 'secret'
 def allowed_file(filename):
    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-
 @app.route('/',methods=["POST", "GET"])
 def upload():
    if request.method == "POST":
@@ -24,7 +23,8 @@ def upload():
       file = request.files['file']
 
       if not allowed_file(file.filename):
-         return "Invalid file type. Only .txt and .fasta are allowed.", 400
+         flash('File extension not supported')
+         return redirect(url_for('upload'))
 
       filename = secure_filename(file.filename)
       save_location = os.path.join(app.config['UPLOAD_FOLDER'],filename)
@@ -33,77 +33,104 @@ def upload():
       session["save_location"] = save_location
 
       genomes = MitochondrialDNAParser(save_location)    
-      result = ",\n".join(genomes.get_all_sequences())
-      session['result'] = result
+      result_names = ",\n".join(genomes.get_all_sequences())
+      session['result_names'] = result_names
    
       return redirect(url_for('choose_analysis'))
    return render_template("index.html")
 
 
-@app.route('/choose analysis',methods=["POST", "GET"])
+@app.route('/choose_analysis',methods=["POST", "GET"])
 def choose_analysis():
-
-   if "result" in session:
-      result = session['result']
+   if "result_names" in session:
+      result_names = session['result_names']
 
    if request.method == "POST":
-      seq_start = None
-      seq_stop = None
+      genomes_number = request.form.get('genomes_number') 
 
-      analysis_type = request.form['analysis_type']
-      session['analysis_type'] = analysis_type
-
-      seq_ID_1 = request.form['seq_ID_1']
-      session['seq_ID_1'] = seq_ID_1
-
-      # seq_ID_2 = request.form['seq_ID_2']
-      # session['seq_ID_2'] = seq_ID_2
-
-      motif = request.form['motif']
-      session['motif'] = motif
-
-      try: 
-         seq_start = int(request.form['start'])
-         session['seq_start'] = seq_start
-
-         seq_stop = int(request.form['stop'])
-         session['seq_stop'] = seq_stop
-
-      except: 
-         print('error')
-
-      return redirect(url_for('show_results'))
-   return render_template('choose_analysis.html', result=result)
+      if genomes_number == 'one':
+         return redirect(url_for('one_genome'))
+      elif genomes_number == 'two':
+         return redirect(url_for('two_genomes'))
+      elif genomes_number == 'all':
+         return redirect(url_for('all_genomes')) 
+      else: 
+         flash("Please select the number of genomes to analyze.")
+         return redirect(url_for('choose_analysis'))
+         
+   return render_template('choose_analysis.html', result_names=result_names)
 
 
-@app.route('/results single analysis',methods=["POST", "GET"])
-def show_results():
-   if "save_location" and "analysis_type" and "seq_ID" and "seq_start" and "seq_start" and "motif" in session:
+@app.route('/one_genome',methods=["POST", "GET"])
+def one_genome():
+   if "result_names" and "save_location" in session:
+      result_names = session['result_names']
       save_location = session['save_location']
-      analysis_type = session['analysis_type']
-      seq_ID_1 = session['seq_ID_1']
-      # seq_ID_2 = session['seq_ID_2']
-      seq_start = session['seq_start']
-      seq_stop = session['seq_stop']
-      motif = session['motif']
+      genomes = MitochondrialDNAParser(save_location)
 
-   genomes = MitochondrialDNAParser(save_location)
-   genome_seq = genomes.get_sequence_by_id(seq_ID_1)
-   genome_analysis =MitochondrialDna(genome_seq)
-   genome_analysis_motif = GenomicMotif(genome_seq, motif)
+   if request.method == "POST":
 
-   if analysis_type == "subseq":
-      result = genome_analysis.extract_seq(seq_start, seq_stop)
-   elif analysis_type == "GC":
-      result = genome_analysis.gc_content()
-   elif analysis_type == "length":
-      result = genome_analysis.seq_len()
-   elif analysis_type == "motif":
-      result = genome_analysis_motif.search_motif()
-   else:
-      result = "Invalid analysis type selected."
+      analysis_type = request.form.get("analysis_type")
+      seq_ID= request.form.get("seq_ID")
+      genome_seq = genomes.get_sequence_by_id(seq_ID)
+      seq_start = request.form.get("start")
+      seq_stop = request.form.get("stop")
+      motif = request.form.get("motif")
 
-   return render_template('results.html', result=result)
+      genome_analysis = MitochondrialDna(genome_seq)
+      genome_analysis_motif = GenomicMotif(genome_seq, motif)
+
+      if analysis_type == "subseq":
+         results = genome_analysis.extract_seq(int(seq_start), int(seq_stop))
+      elif analysis_type == "GC":
+         results = genome_analysis.gc_content()
+      elif analysis_type == "length":
+         results = genome_analysis.seq_len()
+      elif analysis_type == "motif":
+         results = genome_analysis_motif.search_motif()
+      return render_template("results.html", results=results)
+
+
+   return render_template('one_genome.html', result_names=result_names)
+
+@app.route('/two_genomes',methods=["POST", "GET"])
+def two_genomes():
+   if "result_names" and "save_location" in session:
+      result_names = session['result_names']
+      save_location = session['save_location']
+      genomes = MitochondrialDNAParser(save_location)
+
+   if request.method == "POST":
+      analysis_type = request.form.get("analysis_type")
+      seq_ID_1 = request.form.get("seq_ID_1")   
+      seq_ID_2 = request.form.get("seq_ID_2")
+      motif = request.form.get('motif')
+      
+      pair_analysis_dic = {}
+      seq_ID_1 = request.form.get("seq_ID_1")
+      seq_ID_2 = request.form.get("seq_ID_2")
+      genome_seq_1 = genomes.get_sequence_by_id(seq_ID_1)
+      genome_seq_2 = genomes.get_sequence_by_id(seq_ID_2)
+      pair_analysis_dic['seq_ID_1'] = genome_seq_1
+      pair_analysis_dic['seq_ID_2'] = genome_seq_2
+
+      if analysis_type == 'general':
+         pair_analysis = ComparativeAnalysis(pair_analysis_dic)
+         results = pair_analysis.summary()
+      elif analysis_type == 'motifs':
+         pair_analysis = ConservedMotifs(pair_analysis_dic)
+         results = pair_analysis.conserved_motifs(motif)
+      return render_template("results.html", results=results)
+
+   return render_template('two_genomes.html', result_names=result_names)
+
+
+@app.route('/all_genomes',methods=["POST", "GET"])
+def all_genomes():
+   if "result_names" in session:
+      result_names = session['result_names']
+   
+   return render_template('all_genomes.html', result_names=result_names)
 
 
 if __name__ == "__main__":

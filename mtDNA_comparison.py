@@ -115,3 +115,4 @@ class AlignmentAnalysis:
         print(aligned_seq2_str)
 
         return aligned_seq1_str, matches_str, aligned_seq2_str
+
