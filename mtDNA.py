@@ -3,12 +3,14 @@ from Bio.SeqUtils import nt_search
 
 class MitochondrialDna: 
     def __init__ (self, sequence:str): 
-        self._sequence = Seq(sequence)
+        self._sequence = Seq(sequence.upper())
     
     def extract_seq(self, start, end):
         '''Extracts subsequences from genomic sequences'''
-        subseq = self._sequence[start-1:end]
-        return subseq
+        if start < 1 or end > len(self._sequence) or start > end:
+            print ("Invalid start or end position.")
+        return self._sequence[start-1:end]
+        
 
     def gc_content(self, sequence = None): 
         '''Calculates the GC content in a given sequence'''
@@ -16,17 +18,16 @@ class MitochondrialDna:
         seq = sequence if sequence else self._sequence
         g = seq.count('G')
         c = seq.count('C')
-        print('G Count: ',g)
-        print('C count: ',c)
-        print('GC Percentage: ', ((g+c)/len(seq))*100)
-        return f"GC Percentage: {((g+c)/len(seq))*100}"
+        gc_percentage = (g+c)/len(seq)*100
+        return {'G count: ', g, 
+                'C count: ', c,
+                'GC Percentage: ',gc_percentage}
     
     def seq_len(self, sequence = None): 
         '''Calculates the length of a given sequence'''
 
         seq = sequence if sequence else self._sequence
-        print('Sequence length: ', len(seq))
-        return f"Sequence length: {len(seq)}"
+        return len(seq)
 
 
 class GenomicMotif (MitochondrialDna): 
@@ -34,21 +35,16 @@ class GenomicMotif (MitochondrialDna):
 
     def __init__ (self, motif:str, sequence:str):
         super().__init__(sequence)
-        self.motif = motif
+        self.motif = motif.upper()
         
     def search_motif(self): 
         '''Searches for motifs within mitochondrial DNA'''
-        position = nt_search(str(self._sequence),self.motif)
-        if len(position) <= 1:
-            raise ValueError ('No motifs found in the selected sequence')
-        return position
-
-    def count_motif(self): 
-        '''Counts motif occurrences and analyse their distribution across sequences'''
-        position = nt_search(str(self._sequence),self.motif)
-        motif_count = len(position[1:])
-        seqlen = len(self._sequence)
-        
-        print ('Motif count: ', motif_count)
-        print('Distribution through out the sequence(%): ', motif_count/seqlen*100)
-        return f"{motif_count}\n{motif_count/seqlen*100}"
+        positions = nt_search(str(self._sequence),self.motif)
+        if len(positions) <= 1:
+            return 'No motifs found in the selected sequence'
+        else:
+            motif_count = len(positions[1:]) #Counts motif occurrences
+            seq_len = len(self._sequence)
+            distribution = (motif_count/seq_len)*100 if seq_len > 0 else 0 #analyse motif distribution across sequences
+            return positions[1:]
+            return f"Motif count: {motif_count}\n Percentage distribution: {distribution}"
