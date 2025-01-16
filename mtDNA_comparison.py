@@ -16,17 +16,17 @@ class ComparativeAnalysis:
 
     def summary(self):
         """
-        Summarizes length and GC content of all sequences.
-        """
-        summaries = {}
-        for seq_id, seq_obj in self.sequences.items(): #items() returns the instances as tuples
-            seq_length = seq_obj.seq_len()
-            gc_content = seq_obj.gc_content()
+         Summarizes length and GC content of all sequences.
+         """
+        summaries ={}
+        for seq_id, seq in self.sequences.items():
+            sequence = MitochondrialDna(seq)
+            seq_gc = sequence.gc_content()
+            seq_length = sequence.seq_len()
             summaries[seq_id] = {
                 "Length": seq_length,
-                "GC Content": gc_content,
+                "GC Content": seq_gc,
             }
-            print(f"{seq_id}: Length = {seq_length} bases, GC Content = {gc_content:.2f}%")
         return summaries
         
     def summarize_findings(self):
@@ -60,10 +60,13 @@ class ConservedMotifs:
         - values are lists of positions in which the motif is found in that sequence
         """
         conserved_positions = {}
-        for seq_id, sequence_obj in self.sequences.items():
-            motif_obj = GenomicMotif(motif, str(sequence_obj._sequence))
-            positions = motif_obj.search_motif()
-            conserved_positions[seq_id] = positions
+        for seq_id, seq in self.sequences.items():
+            seq_analyzed = GenomicMotif(motif, seq)
+            positions = seq_analyzed.search_motif()
+            conserved_positions[seq_id] = {
+                "Positions": positions,
+                "Motif count": len(positions)
+            }     
         return conserved_positions
 
 

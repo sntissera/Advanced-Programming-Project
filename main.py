@@ -36,6 +36,7 @@ def upload():
       result_names = ",\n".join(genomes.get_all_sequences())
       session['result_names'] = result_names
    
+
       return redirect(url_for('choose_analysis'))
    return render_template("index.html")
 
@@ -51,9 +52,7 @@ def choose_analysis():
       if genomes_number == 'one':
          return redirect(url_for('one_genome'))
       elif genomes_number == 'two':
-         return redirect(url_for('two_genomes'))
-      elif genomes_number == 'all':
-         return redirect(url_for('all_genomes')) 
+         return redirect(url_for('two_genomes')) 
       else: 
          flash("Please select the number of genomes to analyze.")
          return redirect(url_for('choose_analysis'))
@@ -82,13 +81,17 @@ def one_genome():
 
       if analysis_type == "subseq":
          results = genome_analysis.extract_seq(int(seq_start), int(seq_stop))
+         message = 'Subsequence selected:'
       elif analysis_type == "GC":
          results = genome_analysis.gc_content()
+         message = 'GC content:'
       elif analysis_type == "length":
          results = genome_analysis.seq_len()
+         message = 'Length of sequence in base pairs:'
       elif analysis_type == "motif":
          results = genome_analysis_motif.search_motif()
-      return render_template("results.html", results=results)
+         message = ''
+      return render_template("results.html", results=results, message=message)
 
 
    return render_template('one_genome.html', result_names=result_names)
@@ -111,27 +114,33 @@ def two_genomes():
       seq_ID_2 = request.form.get("seq_ID_2")
       genome_seq_1 = genomes.get_sequence_by_id(seq_ID_1)
       genome_seq_2 = genomes.get_sequence_by_id(seq_ID_2)
-      pair_analysis_dic['seq_ID_1'] = genome_seq_1
-      pair_analysis_dic['seq_ID_2'] = genome_seq_2
+      pair_analysis_dic[seq_ID_1] = genome_seq_1
+      pair_analysis_dic[seq_ID_2] = genome_seq_2
 
       if analysis_type == 'general':
          pair_analysis = ComparativeAnalysis(pair_analysis_dic)
+         col2 = 'Length'
+         col3 = 'GC Content'
          results = pair_analysis.summary()
+         return render_template("results_table.html", results=results,col2=col2, col3=col3)
+
       elif analysis_type == 'motifs':
          pair_analysis = ConservedMotifs(pair_analysis_dic)
          results = pair_analysis.conserved_motifs(motif)
-      return render_template("results.html", results=results)
+         col2 = 'Positions - index'
+         col3 = 'Count'
+         return render_template("results_table.html", results=results,col2=col2, col3=col3)
+
+      elif analysis_type == 'alignment':
+         pair_analysis = AlignmentAnalysis(pair_analysis_dic)
+         results = pair_analysis.pairwise_alignment(seq_ID_1,seq_ID_2)
+         message = ''
+         return render_template("results.html", results=results, message=message)
 
    return render_template('two_genomes.html', result_names=result_names)
 
 
-@app.route('/all_genomes',methods=["POST", "GET"])
-def all_genomes():
-   if "result_names" in session:
-      result_names = session['result_names']
-   
-   return render_template('all_genomes.html', result_names=result_names)
-
 
 if __name__ == "__main__":
    app.run(debug= True)
+

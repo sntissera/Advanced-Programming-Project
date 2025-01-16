@@ -37,21 +37,8 @@
     <p><input type="radio" name="analysis_type" value="motif"> Search for given motif and count occurrences</p> 
     <p>Motif sequence: <input name="motif"></p>
     <p class="small text-center"><i>e.g. ACCTTA</i></p>
-
-    <button type="button" onclick="clearSelection(['analysis_type'])">Clear Selection</button>
     <input type="submit" value="Submit">
 </form>
 
-<script>
-const clearSelection = (names) => {
-    names.forEach((name) => {
-        const radioBtns = document.querySelectorAll("input[type='radio'][name='" + name + "']");
-        radioBtns.forEach((radioBtn) => {
-            if (radioBtn.checked === true) {
-                radioBtn.checked = false;
-            }
-        });
-    });
-};
-</script>
+
 {% endblock %}
