@@ -9,7 +9,7 @@ class MitochondrialDna:
         '''Extracts subsequences from genomic sequences'''
         if start < 1 or end > len(self._sequence) or start > end:
             print ("Invalid start or end position.")
-        return self._sequence[start-1:end]
+        return f'Sub sequences: {self._sequence[start-1:end]}'
         
 
     def gc_content(self, sequence = None): 
@@ -19,15 +19,13 @@ class MitochondrialDna:
         g = seq.count('G')
         c = seq.count('C')
         gc_percentage = (g+c)/len(seq)*100
-        return {'G count: ', g, 
-                'C count: ', c,
-                'GC Percentage: ',gc_percentage}
+        return f'G count: {g}, C count: {c} GC Percentage: {gc_percentage}'
     
     def seq_len(self, sequence = None): 
         '''Calculates the length of a given sequence'''
 
         seq = sequence if sequence else self._sequence
-        return len(seq)
+        return f'Length of the sequence: {len(seq)}'
 
 
 class GenomicMotif (MitochondrialDna): 
