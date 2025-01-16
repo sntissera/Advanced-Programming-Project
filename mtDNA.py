@@ -19,21 +19,26 @@ class MitochondrialDna:
         g = seq.count('G')
         c = seq.count('C')
         gc_percentage = (g+c)/len(seq)*100
-        return {'G count: ', g, 
-                'C count: ', c,
-                'GC Percentage: ',gc_percentage}
+       gc_percentage = ((g+c)/filtered_length)*100
+        return f"{round(gc_percentage,2)} %"
     
     def seq_len(self, sequence = None):
         '''Calculates the length of a given sequence'''
+        seq = sequence if sequence != None else self._sequence
+        valid_bases = ['G', 'C', 'A', 'T']
+        filtered_seq = [base for base in seq if base in valid_bases]
+        filtered_length = len(filtered_seq)
+    
+        if filtered_length == 0:
+            return "Invalid sequence or no valid bases found."
 
-        seq = sequence if sequence else self._sequence
-        return len(seq)
+        return f"{filtered_length} bp"
 
 
 class GenomicMotif (MitochondrialDna): 
     '''Represents sequence motifs'''
 
-    def __init__ (self, motif:str, sequence):
+    def __init__ (self, motif:str, sequence:str):
         super().__init__(sequence)
         self.motif = motif.upper()
        
@@ -45,8 +50,8 @@ class GenomicMotif (MitochondrialDna):
         if len(positions) <= 1:
             return 'No motifs found in the selected sequence'
         else:
-            motif_count = len(positions[1:]) #Counts motif occurrences
-            seq_len = len(self._sequence)
-            distribution = (motif_count/seq_len)*100 if seq_len > 0 else 0 #analyse motif distribution across sequences
-            return positions[1:]
-            return f"Motif count: {motif_count}\n Percentage distribution: {distribution}"
+            # motif_count = len(positions[1:]) #Counts motif occurrences
+            seq_len = len(sequence_str)
+            # distribution = (motif_count/seq_len)*100 if seq_len > 0 else 0 #analyse motif distribution across sequences
+            location = positions[1:]
+            return location
