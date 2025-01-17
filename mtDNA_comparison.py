@@ -34,15 +34,14 @@ class ComparativeAnalysis:
         Prints summary findings such as longest/shortest sequence and highest GC content.
         """
         summaries = self.summary()
-        longest = max(summaries.items(), key=lambda x: x[1]['Length'])
-        shortest = min(summaries.items(), key=lambda x: x[1]['Length'])
-        highest_gc = max(summaries.items(), key=lambda x: x[1]['GC Content'])
-        lowest_gc = min(summaries.items(), key=lambda x: x[1]['GC Content'])
+    
+        summary_comparison = {}
+        summary_comparison["longest"] = max(summaries.items(), key=lambda x: x[1]['Length'])
+        summary_comparison["shortest"] = min(summaries.items(), key=lambda x: x[1]['Length'])
+        summary_comparison["highest_gc"] = max(summaries.items(), key=lambda x: x[1]['GC Content'])
+        summary_comparison["lowest_gc"] = min(summaries.items(), key=lambda x: x[1]['GC Content'])
 
-        print(f"The longest sequence is {longest[0]} with {longest[1]['Length']} bases.")
-        print(f"The shortest sequence is {shortest[0]} with {shortest[1]['Length']} bases.")
-        print(f"The sequence with the highest GC content is {highest_gc[0]} with {highest_gc[1]['GC Content']:.2f}% GC content.")
-        print(f"The sequence with the lowest GC content is {lowest_gc[0]} with {highest_gc[1]['GC Content']:.2f}% GC content.")
+        return summary_comparison
 
 class ConservedMotifs:
     def __init__(self, sequences):

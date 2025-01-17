@@ -53,6 +53,8 @@ def choose_analysis():
          return redirect(url_for('one_genome'))
       elif genomes_number == 'two':
          return redirect(url_for('two_genomes')) 
+      elif genomes_number == 'all':
+         return redirect(url_for('all_genomes'))  
       else: 
          flash("Please select the number of genomes to analyze.")
          return redirect(url_for('choose_analysis'))
@@ -80,13 +82,16 @@ def one_genome():
       genome_analysis_motif = GenomicMotif(genome_seq, motif)
 
       if analysis_type == "subseq":
-         results = genome_analysis.extract_seq(int(seq_start), int(seq_stop))
-         message = 'Subsequence selected:'
-         return render_template("results.html", results=results, message=message)
+         subseq = genome_analysis.extract_seq(int(seq_start), int(seq_stop))
+         results = subseq
+         results2 = f"GC content of subsequence: {genome_analysis.gc_content(subseq)}"
+         results3 = f"length of subsequence: {genome_analysis.seq_len(subseq)}"
+         message = f'Subsequence selected from {seq_ID}:'
+         return render_template("results.html", results=results, results2=results2, results3=results3, message=message)
       elif analysis_type == "GC and length":
          results = f"GC content: {genome_analysis.gc_content()}"
          results2 = f"length: {genome_analysis.seq_len()}"
-         message = 'GC content and the length of whole genome:'
+         message = f'GC content and the length of whole genome {seq_ID}:'
          return render_template("results.html", results=results, results2= results2, message=message)
       elif analysis_type == "motifs":
          message = f'Results for the presence of the motif "{motif}" in {seq_ID}: '
@@ -122,7 +127,7 @@ def two_genomes():
          col2 = 'Length'
          col3 = 'GC Content'
          results = pair_analysis.summary()
-         return render_template("results_table.html", results=results,col2=col2, col3=col3)
+         return render_template("results_table.html", results=results, col2=col2, col3=col3)
 
       elif analysis_type == 'motifs':
          pair_analysis = ConservedMotifs(pair_analysis_dic)
@@ -139,7 +144,35 @@ def two_genomes():
 
    return render_template('two_genomes.html', result_names=result_names)
 
+@app.route('/all_genomes',methods=["POST", "GET"])
+def all_genomes():
+   if "result_names" and "save_location" in session:
+      result_names = session['result_names']
+      save_location = session['save_location']
+      genomes = MitochondrialDNAParser(save_location)
+      list_names = genomes.get_all_sequences()
+      all_dic = {}
 
+      for name in list_names:
+         all_dic[name] = genomes.get_sequence_by_id(name)
+
+   if request.method == "POST":
+
+      if analysis_type == 'general':
+            all_analysis = ComparativeAnalysis(all_dic)
+            col2 = 'Length'
+            col3 = 'GC Content'
+            results = pair_analysis.summary()
+            return render_template("results_table.html", results=results, col2=col2, col3=col3)
+
+         elif analysis_type == 'motifs':
+            all_analysis = ConservedMotifs(all_dic)
+            results = pair_analysis.conserved_motifs(motif)
+            col2 = 'Positions - index'
+            col3 = 'Count'
+            return render_template("results_table.html", results=results,col2=col2, col3=col3)
+
+   return render_template('all_genomes.html', result_names=result_names)
 
 if __name__ == "__main__":
    app.run(debug= True)
