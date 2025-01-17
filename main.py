@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, Response
 from werkzeug.utils import secure_filename
 from mtDNA_parser import MitochondrialDNAParser
 from mtDNA import MitochondrialDna, GenomicMotif
@@ -70,7 +70,7 @@ def one_genome():
    if request.method == "POST":
 
       analysis_type = request.form.get("analysis_type")
-      seq_ID= request.form.get("seq_ID")
+      seq_ID = request.form.get("seq_ID")
       genome_seq = genomes.get_sequence_by_id(seq_ID)
       seq_start = request.form.get("start")
       seq_stop = request.form.get("stop")
@@ -82,18 +82,18 @@ def one_genome():
       if analysis_type == "subseq":
          results = genome_analysis.extract_seq(int(seq_start), int(seq_stop))
          message = 'Subsequence selected:'
-      elif analysis_type == "GC":
-         results = genome_analysis.gc_content()
-         message = 'GC content:'
-      elif analysis_type == "length":
-         results = genome_analysis.seq_len()
-         message = 'Length of sequence in base pairs:'
+         return render_template("results.html", results=results, message=message)
+      elif analysis_type == "GC and length":
+         results = f"GC content: {genome_analysis.gc_content()}"
+         results2 = f"length: {genome_analysis.seq_len()}"
+         message = 'GC content and the length of whole genome:'
+         return render_template("results.html", results=results, results2= results2, message=message)
       elif analysis_type == "motifs":
-         results = genome_analysis_motif.search_motif()
-         message = ''
-      return render_template("results.html", results=results, message=message)
-
-
+         message = f'Results for the presence of the motif "{motif}" in {seq_ID}: '
+         results = f"position(s) index: {', '.join(map(str, genome_analysis_motif.search_motif()))}"
+         results2 = f"motif occurance count: {len(genome_analysis_motif.search_motif())}"
+         results3 = f"distribution: {genome_analysis_motif.distribution()}"
+         return render_template("results.html", results=results, results2=results2, results3=results3, message=message)
    return render_template('one_genome.html', result_names=result_names)
 
 @app.route('/two_genomes',methods=["POST", "GET"])

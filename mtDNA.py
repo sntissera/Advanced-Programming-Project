@@ -1,3 +1,4 @@
+import io
 from Bio.Seq import Seq
 from Bio.SeqUtils import nt_search
 import matplotlib.pyplot as plt 
@@ -85,7 +86,10 @@ class GenomicMotif (MitochondrialDna):
         plt.yticks([])
         plt.legend(loc='upper right')
         plt.tight_layout()
-        return plt.show()
 
+        img = io.BytesIO()
+        plt.savefig(img, format='png')
+        img.seek(0)
+        plt.close()
+        return img
 
- 

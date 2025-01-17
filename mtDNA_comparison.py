@@ -61,10 +61,10 @@ class ConservedMotifs:
         """
         conserved_positions = {}
         for seq_id, seq in self.sequences.items():
-            seq_analyzed = GenomicMotif(motif, seq)
+            seq_analyzed = GenomicMotif(seq, motif)
             positions = seq_analyzed.search_motif()
             conserved_positions[seq_id] = {
-                "Positions": positions,
+                "Positions": ', '.join(map(str, positions)),
                 "Motif count": len(positions)
             }     
         return conserved_positions
