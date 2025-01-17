@@ -8,7 +8,7 @@ class MitochondrialDna:
     def extract_seq(self, start, end):
         '''Extracts subsequences from genomic sequences'''
         if start < 1 or end > len(self._sequence) or start > end:
-            print ("Invalid start or end position.")
+            return ("Invalid start or end position.")
         return self._sequence[start-1:end]
         
 
