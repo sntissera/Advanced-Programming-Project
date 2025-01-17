@@ -1,5 +1,6 @@
 from Bio.Seq import Seq
 from Bio.SeqUtils import nt_search
+import matplotlib.pyplot as plt 
 
 class MitochondrialDna: 
     def __init__ (self, sequence): 
