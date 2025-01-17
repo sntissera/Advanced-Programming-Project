@@ -88,7 +88,7 @@ def one_genome():
       elif analysis_type == "length":
          results = genome_analysis.seq_len()
          message = 'Length of sequence in base pairs:'
-      elif analysis_type == "motif":
+      elif analysis_type == "motifs":
          results = genome_analysis_motif.search_motif()
          message = ''
       return render_template("results.html", results=results, message=message)

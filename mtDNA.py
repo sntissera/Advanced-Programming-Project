@@ -19,7 +19,6 @@ class MitochondrialDna:
         g = seq.count('G')
         c = seq.count('C')
         gc_percentage = (g+c)/len(seq)*100
-       gc_percentage = ((g+c)/filtered_length)*100
         return f"{round(gc_percentage,2)} %"
     
     def seq_len(self, sequence = None):
