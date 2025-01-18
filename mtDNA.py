@@ -41,8 +41,15 @@ class GenomicMotif (MitochondrialDna):
 
     def __init__ (self, sequence:str, motif:str):
         super().__init__(sequence)
-        self.motif = motif.upper()
-       
+        self.set_motif(motif)
+
+    def set_motif(self, motif):
+        for i in motif: 
+            if i not in ['G', 'C', 'A', 'T']:
+                raise ValueError("Motif not valid")
+            else: 
+                self.motif = motif
+
     def search_motif(self): 
         '''Searches for motifs within mitochondrial DNA'''
         sequence_str = str(self._sequence)

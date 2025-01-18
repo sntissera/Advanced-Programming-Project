@@ -12,8 +12,23 @@
 
 <hr width="100%" size="4" color="#2c2c2c" noshade> 
 
+<div class="container-sm mx-auto mt-3" style="max-width: 600px;">
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-warning text-center" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+</div>
+
     <h4 style="color: #dc3545;">ALL GENOMES ANALYSIS</h4>
-                    <p>Select the analysis:</p>
+                <p>Select the analysis:</p>
+                    <div class="container-sm mx-auto mt-3" style="max-width: 600px;">
+                        {% for message in get_flashed_messages() %}
+                            <div class="alert alert-warning text-center" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
             <form>
                 <p><input type="radio" name="analysis_type" value="general"> General comparison of GC contents and lengths</p>
                 <p><input type="radio" name="analysis_type" value="motifs"> Search for motif across the sequences</p>

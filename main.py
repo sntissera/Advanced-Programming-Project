@@ -56,7 +56,7 @@ def choose_analysis():
       elif genomes_number == 'all':
          return redirect(url_for('all_genomes'))  
       else: 
-         flash("Please select the number of genomes to analyze.")
+         flash("Please select the number of genomes to be analyzed")
          return redirect(url_for('choose_analysis'))
          
    return render_template('choose_analysis.html', result_names=result_names)
@@ -76,29 +76,48 @@ def one_genome():
       genome_seq = genomes.get_sequence_by_id(seq_ID)
       seq_start = request.form.get("start")
       seq_stop = request.form.get("stop")
-      motif = request.form.get("motif")
+      motif = request.form.get("motif").upper()
 
-      genome_analysis = MitochondrialDna(genome_seq)
-      genome_analysis_motif = GenomicMotif(genome_seq, motif)
+      try:
+         genome_analysis = MitochondrialDna(genome_seq)
+      except ValueError: 
+         flash("Genome name not found. Please check the list above and type one of the names present in the file")
+         return redirect(url_for('one_genome'))
 
       if analysis_type == "subseq":
-         subseq = genome_analysis.extract_seq(int(seq_start), int(seq_stop))
-         results = subseq
-         results2 = f"GC content of subsequence: {genome_analysis.gc_content(subseq)}"
-         results3 = f"length of subsequence: {genome_analysis.seq_len(subseq)}"
-         message = f'Subsequence selected from {seq_ID}:'
-         return render_template("results.html", results=results, results2=results2, results3=results3, message=message)
+         try:
+            subseq = genome_analysis.extract_seq(int(seq_start), int(seq_stop))
+            results = subseq
+            results2 = f"GC content of subsequence: {genome_analysis.gc_content(subseq)}"
+            results3 = f"length of subsequence: {genome_analysis.seq_len(subseq)}"
+            message = f'Subsequence selected from {seq_ID}:'
+            return render_template("results.html", results=results, results2=results2, results3=results3, message=message)
+         except ValueError: 
+            flash("Invalid index")
+            return redirect(url_for('one_genome'))
       elif analysis_type == "GC and length":
          results = f"GC content: {genome_analysis.gc_content()}"
          results2 = f"length: {genome_analysis.seq_len()}"
          message = f'GC content and the length of whole genome {seq_ID}:'
          return render_template("results.html", results=results, results2= results2, message=message)
       elif analysis_type == "motifs":
-         message = f'Results for the presence of the motif "{motif}" in {seq_ID}: '
-         results = f"position(s) index: {', '.join(map(str, genome_analysis_motif.search_motif()))}"
-         results2 = f"motif occurance count: {len(genome_analysis_motif.search_motif())}"
-         results3 = f"distribution: {genome_analysis_motif.distribution()}"
-         return render_template("results.html", results=results, results2=results2, results3=results3, message=message)
+         try:
+            genome_analysis_motif = GenomicMotif(genome_seq, motif)
+            message = f'Results for the presence of the motif "{motif}" in {seq_ID}: '
+            results = f"position(s) index: {', '.join(map(str, genome_analysis_motif.search_motif()))}"
+            results2 = f"motif occurance count: {len(genome_analysis_motif.search_motif())}"
+            results3 = f"distribution: {genome_analysis_motif.distribution()}"
+            return render_template("results.html", results=results, results2=results2, results3=results3, message=message)
+         except ValueError: 
+            flash("Please introduce a valid motif")
+            return redirect(url_for('one_genome'))
+         except AttributeError:
+            flash("Please introduce a valid motif")
+            return redirect(url_for('one_genome'))
+      else: 
+         flash("Please select the type of analysis")
+         return redirect(url_for('one_genome'))
+         
    return render_template('one_genome.html', result_names=result_names)
 
 @app.route('/two_genomes',methods=["POST", "GET"])
@@ -112,7 +131,7 @@ def two_genomes():
       analysis_type = request.form.get("analysis_type")
       seq_ID_1 = request.form.get("seq_ID_1")   
       seq_ID_2 = request.form.get("seq_ID_2")
-      motif = request.form.get('motif')
+      motif = request.form.get("motif").upper()
       
       pair_analysis_dic = {}
       seq_ID_1 = request.form.get("seq_ID_1")
@@ -121,28 +140,47 @@ def two_genomes():
       genome_seq_2 = genomes.get_sequence_by_id(seq_ID_2)
       pair_analysis_dic[seq_ID_1] = genome_seq_1
       pair_analysis_dic[seq_ID_2] = genome_seq_2
+         
 
       if analysis_type == 'general':
-         pair_analysis = ComparativeAnalysis(pair_analysis_dic)
-         col2 = 'Length'
-         col3 = 'GC Content'
-         results = pair_analysis.summary()
-         return render_template("results_table.html", results=results, col2=col2, col3=col3)
+         try:
+            pair_analysis = ComparativeAnalysis(pair_analysis_dic)
+            col2 = 'Length'
+            col3 = 'GC Content'
+            results = pair_analysis.summary()
+            return render_template("results_table.html", results=results, col2=col2, col3=col3)
+         except ValueError: 
+            flash("Genomes names not found. Please check the list above and type two of the names present in the file")
+            return redirect(url_for('two_genomes'))
 
       elif analysis_type == 'motifs':
-         pair_analysis = ConservedMotifs(pair_analysis_dic)
-         results = pair_analysis.conserved_motifs(motif)
-         col2 = 'Positions - index'
-         col3 = 'Count'
-         return render_template("results_table.html", results=results,col2=col2, col3=col3)
+         try: 
+            pair_analysis = ConservedMotifs(pair_analysis_dic)
+            results = pair_analysis.conserved_motifs(motif)
+            col2 = 'Positions - index'
+            col3 = 'Count'
+            return render_template("results_table.html", results=results,col2=col2, col3=col3)
+         except AttributeError:
+            flash("Please introduce a valid input")
+            return redirect(url_for('two_genomes'))
+         except ValueError:
+            flash("Please introduce a valid input")
+            return redirect(url_for('two_genomes'))
 
       elif analysis_type == 'alignment':
-         pair_analysis = AlignmentAnalysis(pair_analysis_dic)
-         results = pair_analysis.pairwise_alignment(seq_ID_1,seq_ID_2)
-         message = ''
-         return render_template("results.html", results=results, message=message)
-
+         try: 
+            pair_analysis = AlignmentAnalysis(pair_analysis_dic)
+            results= pair_analysis.pairwise_alignment(seq_ID_1,seq_ID_2)
+            message = ''
+            return render_template("results.html", results=results, message=message)
+         except ValueError:
+            flash("Please introduce a valid input")
+            return redirect(url_for('two_genomes'))
+      else: 
+         flash("Please select the type of analysis")
+         return redirect(url_for('two_genomes'))
    return render_template('two_genomes.html', result_names=result_names)
+
 
 @app.route('/all_genomes',methods=["POST", "GET"])
 def all_genomes():
@@ -174,7 +212,9 @@ def all_genomes():
          col2 = 'Positions - index'
          col3 = 'Count'
          return render_template("results_table.html", results=results,col2=col2, col3=col3)
-
+      else: 
+         flash("Please select the type of analysis")
+         return redirect(url_for('all_genomes'))
    return render_template('all_genomes.html', result_names=result_names)
 
 if __name__ == "__main__":
