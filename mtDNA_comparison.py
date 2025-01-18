@@ -70,29 +70,31 @@ class ConservedMotifs:
 
 
 class AlignmentAnalysis:
-
     def __init__(self, sequences):
         self.sequences = sequences
 
     def pairwise_alignment(self, seq_id_1, seq_id_2):
         """Perform pairwise alignment using Biopython and visually represent the alignment."""
         if seq_id_1 not in self.sequences or seq_id_2 not in self.sequences:
-            raise ValueError("One or both sequence IDs not found.")
-
-        seq1 = str(self.sequences[seq_id_1]._sequence)
-        seq2 = str(self.sequences[seq_id_2]._sequence)
+            return {
+                "Error": "One or both sequence IDs not found. Please provide valid sequence IDs."
+                }
+            
+        seq1 = str(self.sequences[seq_id_1])
+        seq2 = str(self.sequences[seq_id_2])
 
         # create the aligner
         aligner = PairwiseAligner()
-        aligner.mode = 'global'
+        aligner.mode = "global"
+        
+        # perform alignment
         alignments = aligner.align(seq1, seq2)
-
-        # get the first alignment (best alignment)
         alignment = alignments[0]
-        aligned_seq1 = alignment.aligned[0]
-        aligned_seq2 = alignment.aligned[1]
 
-        # Generate the visualization
+        # extract aligned sequences
+        aligned_seq1, aligned_seq2 = alignment.aligned
+
+        # generate the visualization
         visual_seq1, visual_seq2, matches = [], [], []
         for (start1, end1), (start2, end2) in zip(aligned_seq1, aligned_seq2):
             for i in range(start1, end1):
@@ -101,20 +103,27 @@ class AlignmentAnalysis:
                 visual_seq2.append(seq2[i])
 
         for base1, base2 in zip(visual_seq1, visual_seq2):
-            if base1 == base2:
-                matches.append("|")
-            else:
-                matches.append(" ")
+            matches.append("|" if base1 == base2 else " ")
 
-        # convert lists to strings for printing
+        # convert lists to strings
         aligned_seq1_str = "".join(visual_seq1)
         matches_str = "".join(matches)
         aligned_seq2_str = "".join(visual_seq2)
 
-        # print the alignment
-        print(aligned_seq1_str)
-        print(matches_str)
-        print(aligned_seq2_str)
-
-        return aligned_seq1_str, matches_str, aligned_seq2_str
-
+        # split into blocks of defined width
+        def split_str(sequence, width=80):
+            return [sequence[i : i + width] for i in range(0, len(sequence), width)]
+        
+        seq1_lines = split_str(aligned_seq1_str, line_width)
+        matches_lines = split_str(matches_str, line_width)
+        seq2_lines = split_str(aligned_seq2_str, line_width)
+        
+        formatted = []
+        for line_1, line_match, line_2 in zip(seq1_lines, matches_lines, seq2_lines):
+            formatted.append(line_1)
+            formatted.append(line_match)
+            formatted.append(line_2)
+            formatted.append("")
+            
+        # return the alignment
+        return "\n".join(formatted)
