@@ -157,20 +157,23 @@ def all_genomes():
          all_dic[name] = genomes.get_sequence_by_id(name)
 
    if request.method == "POST":
+      analysis_type = request.form.get("analysis_type")
+      motif = request.form.get("motif")
+
 
       if analysis_type == 'general':
-            all_analysis = ComparativeAnalysis(all_dic)
-            col2 = 'Length'
-            col3 = 'GC Content'
-            results = pair_analysis.summary()
-            return render_template("results_table.html", results=results, col2=col2, col3=col3)
+         all_analysis = ComparativeAnalysis(all_dic)
+         col2 = 'Length'
+         col3 = 'GC Content'
+         results = all_analysis.summary()
+         return render_template("results_table.html", results=results, col2=col2, col3=col3)
 
-         elif analysis_type == 'motifs':
-            all_analysis = ConservedMotifs(all_dic)
-            results = pair_analysis.conserved_motifs(motif)
-            col2 = 'Positions - index'
-            col3 = 'Count'
-            return render_template("results_table.html", results=results,col2=col2, col3=col3)
+      elif analysis_type == 'motifs':
+         all_analysis = ConservedMotifs(all_dic)
+         results = all_analysis.conserved_motifs(motif)
+         col2 = 'Positions - index'
+         col3 = 'Count'
+         return render_template("results_table.html", results=results,col2=col2, col3=col3)
 
    return render_template('all_genomes.html', result_names=result_names)
 
