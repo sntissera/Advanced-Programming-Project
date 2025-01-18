@@ -114,9 +114,9 @@ class AlignmentAnalysis:
         def split_str(sequence, width=80):
             return [sequence[i : i + width] for i in range(0, len(sequence), width)]
         
-        seq1_lines = split_str(aligned_seq1_str, line_width)
-        matches_lines = split_str(matches_str, line_width)
-        seq2_lines = split_str(aligned_seq2_str, line_width)
+        seq1_lines = split_str(aligned_seq1_str, width)
+        matches_lines = split_str(matches_str, width)
+        seq2_lines = split_str(aligned_seq2_str, width)
         
         formatted = []
         for line_1, line_match, line_2 in zip(seq1_lines, matches_lines, seq2_lines):
