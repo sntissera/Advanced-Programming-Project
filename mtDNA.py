@@ -9,7 +9,9 @@ class MitochondrialDna:
         '''Extracts subsequences from genomic sequences'''
         if start < 1 or end > len(self._sequence) or start > end:
             return ("Invalid start or end position.")
-        return str(self._sequence[start-1:end])
+        sub_sequence =  str(self._sequence[start-1:end])
+        modified_seq = '\n'.join([sub_sequence[i:i+10] for i in range (0, len(sub_sequence), 10)])
+        return modified_seq
         
 
     def gc_content(self, sequence = None): 
@@ -68,26 +70,4 @@ class GenomicMotif (MitochondrialDna):
         distribution = (motif_count/seq_len)*100 if seq_len > 0 else 0 
         return f'{round(distribution,2)} %'
 
-    def visualize_motif(self):
-        '''Visualize the location of a motif in the genome'''
-        
-        sequence_str = str(self._sequence)
-        positions = self.search_motif()
-        highlighted_sequence = []
-        motif_length = len(self.motif)
-        last_index = 0
-
-        for pos in positions:
-            start = pos
-            end = start + motif_length
-            highlighted_sequence.append(sequence_str[last_index:start])
-            highlighted_sequence.append(f'[{sequence_str[start:end]}]')
-            last_index = end
-
-        highlighted_sequence.append(sequence_str[last_index:])      
-        return ''.join(highlighted_sequence)
-
-   
-        img.seek(0)
-        plt.close()
-        return img
+ 
