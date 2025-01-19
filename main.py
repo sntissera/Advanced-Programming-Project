@@ -96,7 +96,7 @@ def one_genome():
 
       if analysis_type == "subseq":
          try:
-            subseq = f"{seq_start} {genome_analysis.extract_seq(int(seq_start), int(seq_stop))} {seq_stop}"
+            subseq = f"{genome_analysis.extract_seq(int(seq_start), int(seq_stop))}"
             results = subseq
             results2 = f"GC content of subsequence: {genome_analysis.gc_content(subseq)}"
             results3 = f"length of subsequence: {genome_analysis.seq_len(subseq)}"
