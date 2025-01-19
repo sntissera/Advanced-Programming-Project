@@ -1,8 +1,6 @@
-import io
 from Bio.Seq import Seq
 from Bio.SeqUtils import nt_search
-import matplotlib.pyplot as plt 
-
+ 
 class MitochondrialDna: 
     def __init__ (self, sequence): 
         self._sequence = Seq(sequence)
@@ -75,28 +73,21 @@ class GenomicMotif (MitochondrialDna):
         
         sequence_str = str(self._sequence)
         positions = self.search_motif()
-        positions = [pos-1 for pos in positions]
+        highlighted_sequence = []
+        motif_length = len(self.motif)
+        last_index = 0
 
-        #empty plot
-        plt.figure(figsize=(10,2))
-        plt.plot([0,len(sequence_str)],[1,1], color = 'gray', lw=2, label = 'Genome' )
-
-        #vertical lines
         for pos in positions:
-            plt.axvline(pos,color='red', linestyle = '--',lw=1,label='Motif Location' if pos == positions[0] else "" )
-            plt.text(pos,1.05,str(pos+1),color = 'blue', fontsize = 8, ha='center',rotation=90)
-            
-        #plot
-        plt.title('Motif Location in Genome')
-        plt.xlabel('Position in Genome')
-        plt.ylabel('Presence of Motif')
-        plt.yticks([])
-        plt.legend(loc='upper right')
-        plt.tight_layout()
+            start = pos
+            end = start + motif_length
+            highlighted_sequence.append(sequence_str[last_index:start])
+            highlighted_sequence.append(f'[{sequence_str[start:end]}]')
+            last_index = end
 
-        img = io.BytesIO()
-        plt.savefig(img, format='png')
+        highlighted_sequence.append(sequence_str[last_index:])      
+        return ''.join(highlighted_sequence)
+
+   
         img.seek(0)
         plt.close()
         return img
-

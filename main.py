@@ -8,7 +8,6 @@ from mtDNA_comparison import ComparativeAnalysis, ConservedMotifs, AlignmentAnal
 UPLOAD_FOLDER = './input_files'
 ALLOWED_EXTENSIONS = {'fasta', 'txt'}
 
-
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.secret_key = 'secret' 
@@ -104,10 +103,17 @@ def one_genome():
          try:
             genome_analysis_motif = GenomicMotif(genome_seq, motif)
             message = f'Results for the presence of the motif "{motif}" in {seq_ID}: '
-            results = f"position(s) index: {', '.join(map(str, genome_analysis_motif.search_motif()))}"
-            results2 = f"motif occurance count: {len(genome_analysis_motif.search_motif())}"
-            results3 = f"distribution: {genome_analysis_motif.distribution()}"
-            return render_template("results.html", results=results, results2=results2, results3=results3, message=message)
+            motif_index = genome_analysis_motif.search_motif()
+            if isinstance(motif_index, list):
+               results = f"position(s) index: {', '.join(map(str, motif_index))}"
+               results2 = f"motif occurance count: {len(motif_index)}"
+               results3 = f"distribution: {genome_analysis_motif.distribution()}"
+               results4 = genome_analysis_motif.visualize_motif()
+            else: 
+               results = motif_index
+               results2 = ""
+               results3 = ""
+            return render_template("results.html", results=results, results2=results2, results3=results3, results4=results4, message=message)
          except ValueError: 
             flash("Please introduce a valid motif")
             return redirect(url_for('one_genome'))
@@ -119,6 +125,7 @@ def one_genome():
          return redirect(url_for('one_genome'))
          
    return render_template('one_genome.html', result_names=result_names)
+
 
 @app.route('/two_genomes',methods=["POST", "GET"])
 def two_genomes():
@@ -141,7 +148,6 @@ def two_genomes():
       pair_analysis_dic[seq_ID_1] = genome_seq_1
       pair_analysis_dic[seq_ID_2] = genome_seq_2
          
-
       if analysis_type == 'general':
          try:
             pair_analysis = ComparativeAnalysis(pair_analysis_dic)
@@ -170,9 +176,9 @@ def two_genomes():
       elif analysis_type == 'alignment':
          try: 
             pair_analysis = AlignmentAnalysis(pair_analysis_dic)
-            results= pair_analysis.pairwise_alignment(seq_ID_1,seq_ID_2)
-            message = ''
-            return render_template("results.html", results=results, message=message)
+            results_align= pair_analysis.pairwise_alignment(seq_ID_1,seq_ID_2)
+            message = f'Alignment results for{seq_ID_1} and {seq_ID_2}:'
+            return render_template("results.html", results_align=results_align, message=message)
          except ValueError:
             flash("Please introduce a valid input")
             return redirect(url_for('two_genomes'))
@@ -190,14 +196,13 @@ def all_genomes():
       genomes = MitochondrialDNAParser(save_location)
       list_names = genomes.get_all_sequences()
       all_dic = {}
-
       for name in list_names:
          all_dic[name] = genomes.get_sequence_by_id(name)
 
    if request.method == "POST":
-      analysis_type = request.form.get("analysis_type")
-      motif = request.form.get("motif")
 
+      analysis_type = request.form.get("analysis_type")
+      motif = request.form.get("motif").upper()
 
       if analysis_type == 'general':
          all_analysis = ComparativeAnalysis(all_dic)
@@ -207,16 +212,24 @@ def all_genomes():
          return render_template("results_table.html", results=results, col2=col2, col3=col3)
 
       elif analysis_type == 'motifs':
-         all_analysis = ConservedMotifs(all_dic)
-         results = all_analysis.conserved_motifs(motif)
-         col2 = 'Positions - index'
-         col3 = 'Count'
-         return render_template("results_table.html", results=results,col2=col2, col3=col3)
+         try:
+            all_analysis = ConservedMotifs(all_dic)
+            results = all_analysis.conserved_motifs(motif)
+            col2 = 'Positions - index'
+            col3 = 'Count'
+            return render_template("results_table.html", results=results,col2=col2, col3=col3)
+         except AttributeError:
+            flash("Please introduce a valid motif")
+            return redirect(url_for('all_genomes'))
+         except ValueError:
+            flash("Please introduce a valid motif")
+            return redirect(url_for('all_genomes'))
+
       else: 
          flash("Please select the type of analysis")
          return redirect(url_for('all_genomes'))
    return render_template('all_genomes.html', result_names=result_names)
 
+
 if __name__ == "__main__":
    app.run(debug= True)
-
