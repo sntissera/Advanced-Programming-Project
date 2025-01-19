@@ -20,8 +20,10 @@
     {% endfor %}
 </div>
 
-    <h4 style="color: #dc3545;">TWO GENOMES ANALYSIS</h4>
-        <p>Type the names of the genomes you want to analyze:</p>
+    <h4>TWO GENOMES ANALYSIS</h4>
+    <hr width="25%" size="4" color="#2c2c2c" noshade> 
+
+    <h5 style="color: #dc3545;">Type the name of the genome you want to analyze:</h5>
             <form method="POST">
                 <p>1st genome name: <input name="seq_ID_1"></p>
                 <p class="small text-center"><i>e.g. NC_000001</i></p>
@@ -31,14 +33,19 @@
 
                 <hr width="50%" size="4" color="#2c2c2c" noshade>
 
-                <p>Select the analysis:</p>
+                <h5 style="color: #dc3545;">Select the analysis:</h5>
 
                 <p><input type="radio" name="analysis_type" value="general"> General comparison of GC contents and lengths</p>
+                <hr width="25%" size="4" color="#2c2c2c" noshade> 
+
                 <p><input type="radio" name="analysis_type" value="motifs"> Search for motif across the 2 sequences</p>
                 <p>Motif sequence: <input name="motif"></p>
-                <p class="small text-center"><i>e.g. ACCTTA</i></p>
+                <p class="small text-center"><i>e.g. ATG</i></p>
+                <hr width="25%" size="4" color="#2c2c2c" noshade> 
+
                 <p><input type="radio" name="analysis_type" value="alignment"> Pairwise alignment</p>
-                        
+                <hr width="25%" size="4" color="#2c2c2c" noshade> 
+
                 <input type=submit value=Submit>
             </form>        
   

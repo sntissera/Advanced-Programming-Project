@@ -20,14 +20,20 @@
     {% endfor %}
 </div>
 
-    <h4 style="color: #dc3545;">ALL GENOMES ANALYSIS</h4>
-                <p>Select the analysis:</p>
-               
+    <h4>ALL GENOMES ANALYSIS</h4>
+    <hr width="25%" size="4" color="#2c2c2c" noshade> 
+
+    <h5 style="color: #dc3545;">Select the analysis:</h5>
+
             <form method="POST">
                 <p><input type="radio" name="analysis_type" value="general"> General comparison of GC contents and lengths</p>
+                <hr width="25%" size="4" color="#2c2c2c" noshade> 
+
                 <p><input type="radio" name="analysis_type" value="motifs"> Search for motif across the sequences</p>
                 <p>Motif sequence: <input name="motif"></p>
-                <p class="small text-center"><i>e.g. ACCTTA</i></p>
+                <p class="small text-center"><i>e.g. ATG</i></p>
+                <hr width="25%" size="4" color="#2c2c2c" noshade> 
+
                 <input type=submit value=Submit>
             </form>        
   

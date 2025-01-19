@@ -15,6 +15,13 @@ app.secret_key = 'secret'
 def allowed_file(filename):
    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+def external_seq(seq):
+   seq_cleaned = seq.replace(" ", "").upper()
+   for nuc in seq_cleaned:
+      if nuc not in ['G', 'C', 'A', 'T']:
+         raise ValueError
+   return seq_cleaned
+
 @app.route('/',methods=["POST", "GET"])
 def upload():
    if request.method == "POST":
@@ -30,11 +37,14 @@ def upload():
       file.save(save_location)
             
       session["save_location"] = save_location
-
-      genomes = MitochondrialDNAParser(save_location)    
-      result_names = ",\n".join(genomes.get_all_sequences())
-      session['result_names'] = result_names
-   
+      try: 
+         genomes = MitochondrialDNAParser(save_location)    
+         result_names = ",\n".join(genomes.get_all_sequences())
+         session['result_names'] = result_names
+      except ValueError: 
+         flash('File content not supported, please upload a different file')
+         return redirect(url_for('upload'))
+         
 
       return redirect(url_for('choose_analysis'))
    return render_template("index.html")
@@ -76,6 +86,7 @@ def one_genome():
       seq_start = request.form.get("start")
       seq_stop = request.form.get("stop")
       motif = request.form.get("motif").upper()
+      ext_seq = request.form.get("ext_seq")
 
       try:
          genome_analysis = MitochondrialDna(genome_seq)
@@ -85,12 +96,13 @@ def one_genome():
 
       if analysis_type == "subseq":
          try:
-            subseq = genome_analysis.extract_seq(int(seq_start), int(seq_stop))
+            subseq = f"{seq_start} {genome_analysis.extract_seq(int(seq_start), int(seq_stop))} {seq_stop}"
             results = subseq
             results2 = f"GC content of subsequence: {genome_analysis.gc_content(subseq)}"
             results3 = f"length of subsequence: {genome_analysis.seq_len(subseq)}"
             message = f'Subsequence selected from {seq_ID}:'
-            return render_template("results.html", results=results, results2=results2, results3=results3, message=message)
+            results_align = {}
+            return render_template("results.html", results=results, results2=results2, results3=results3, results_align=results_align, message=message)
          except ValueError: 
             flash("Invalid index")
             return redirect(url_for('one_genome'))
@@ -98,7 +110,8 @@ def one_genome():
          results = f"GC content: {genome_analysis.gc_content()}"
          results2 = f"length: {genome_analysis.seq_len()}"
          message = f'GC content and the length of whole genome {seq_ID}:'
-         return render_template("results.html", results=results, results2= results2, message=message)
+         results_align = {}
+         return render_template("results.html", results=results, results2= results2, results_align=results_align, message=message)
       elif analysis_type == "motifs":
          try:
             genome_analysis_motif = GenomicMotif(genome_seq, motif)
@@ -109,16 +122,32 @@ def one_genome():
                results2 = f"motif occurance count: {len(motif_index)}"
                results3 = f"distribution: {genome_analysis_motif.distribution()}"
                results4 = genome_analysis_motif.visualize_motif()
+               results_align = {}
             else: 
                results = motif_index
-               results2 = ""
-               results3 = ""
-            return render_template("results.html", results=results, results2=results2, results3=results3, results4=results4, message=message)
+            return render_template("results.html", results=results, results2=results2, results3=results3, results4=results4, results_align=results_align, message=message)
          except ValueError: 
             flash("Please introduce a valid motif")
             return redirect(url_for('one_genome'))
          except AttributeError:
             flash("Please introduce a valid motif")
+            return redirect(url_for('one_genome'))
+      elif analysis_type == "align":
+         try:
+            pair_dic = {}
+            seq2 = external_seq(ext_seq)
+            pair_dic[seq_ID] = genome_seq
+            pair_dic['comparison'] = seq2
+            results = ''
+            results2 = ''
+            results3 = ''
+            results4 = ''
+            message = f'Alignment results for {seq_ID} (called here target) and the comparison sequence (called here query):'
+            pair_analysis = AlignmentAnalysis(pair_dic)
+            results_align= pair_analysis.pairwise_alignment(seq_ID, 'comparison')
+            return render_template("results.html", results=results, results2=results2, results3=results3, results4=results4, results_align=results_align, message=message)
+         except ValueError:
+            flash("Please introduce only the sequence to be aligned")
             return redirect(url_for('one_genome'))
       else: 
          flash("Please select the type of analysis")
@@ -177,7 +206,7 @@ def two_genomes():
          try: 
             pair_analysis = AlignmentAnalysis(pair_analysis_dic)
             results_align= pair_analysis.pairwise_alignment(seq_ID_1,seq_ID_2)
-            message = f'Alignment results for {seq_ID_1} and {seq_ID_2}:'
+            message = f'Alignment results for {seq_ID_1} (called here target) and {seq_ID_2} (called here query):'
             return render_template("results.html", results_align=results_align, message=message)
          except ValueError:
             flash("Please introduce a valid input")

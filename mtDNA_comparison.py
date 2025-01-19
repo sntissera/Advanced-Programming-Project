@@ -1,4 +1,3 @@
-from Bio.Seq import Seq
 from Bio.SeqUtils import nt_search
 from Bio.Align import PairwiseAligner
 
@@ -6,12 +5,8 @@ from mtDNA_parser import MitochondrialDNAParser
 from mtDNA import MitochondrialDna, GenomicMotif
 
 class ComparativeAnalysis:
-    def __init__(self, sequences):
-        """
-        Initializes with a dictionary of all the sequences to be analyzed;
-        keys are the sequences' IDs.
-        The sequences are passed as instances of MitochondrialDna.
-        """
+    def __init__(self, sequences:dict):
+
         self.sequences = sequences
 
     def summary(self):
@@ -29,19 +24,21 @@ class ComparativeAnalysis:
             }
         return summaries
         
-    def summarize_findings(self):
-        """
-        Prints summary findings such as longest/shortest sequence and highest GC content.
-        """
-        summaries = self.summary()
+    # def summarize_findings(self):
+    #     """
+    #     Create a summary findings dictionary with longest/shortest sequence and highest/lowest GC content.
+    #     """
+    #     summaries = self.summary()
     
-        summary_comparison = {}
-        summary_comparison["longest"] = max(summaries.items(), key=lambda x: x[1]['Length'])
-        summary_comparison["shortest"] = min(summaries.items(), key=lambda x: x[1]['Length'])
-        summary_comparison["highest_gc"] = max(summaries.items(), key=lambda x: x[1]['GC Content'])
-        summary_comparison["lowest_gc"] = min(summaries.items(), key=lambda x: x[1]['GC Content'])
+    #     summary_comparison = {}
+    #     summary_comparison["longest"] = max(summaries.items(), key=lambda x: x[1]['Length'])
+    #     summary_comparison["shortest"] = min(summaries.items(), key=lambda x: x[1]['Length'])
+    #     summary_comparison["highest_gc"] = max(summaries.items(), key=lambda x: x[1]['GC Content'])
+    #     summary_comparison["lowest_gc"] = min(summaries.items(), key=lambda x: x[1]['GC Content'])
 
-        return summary_comparison
+    #     return summary_comparison
+    
+
 
 class ConservedMotifs:
     def __init__(self, sequences):
@@ -80,15 +77,15 @@ class AlignmentAnalysis:
         """Initialize with a dictionary of sequences."""
         self.sequences = sequences
 
-    def pairwise_alignment(self, seq_id_1, seq_id_2, width: int = 80):
-        """Perform pairwise alignment using Biopython and visually represent the alignment."""
+    def pairwise_alignment(self, seq_id_1, seq_id_2):
+        """Perform pairwise alignment using PairwiseAligner, calculate the score and visually represent the alignment."""
         
         seq1 = str(self.sequences[seq_id_1])
         seq2 = str(self.sequences[seq_id_2])
 
         aligner = PairwiseAligner()
 
-        aligner.mode = "global"
+        aligner.mode = "local"
         alignments = aligner.align(seq1, seq2)
         alignment = alignments[0]
      

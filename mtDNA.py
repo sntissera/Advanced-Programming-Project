@@ -2,7 +2,7 @@ from Bio.Seq import Seq
 from Bio.SeqUtils import nt_search
  
 class MitochondrialDna: 
-    def __init__ (self, sequence): 
+    def __init__ (self, sequence:str): 
         self._sequence = Seq(sequence)
     
     def extract_seq(self, start, end):
