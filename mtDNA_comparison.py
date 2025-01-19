@@ -94,7 +94,7 @@ class AlignmentAnalysis:
   
         return {
             "score": score,
-            "alignment vizualization": alignment,
+            "alignment visualization": alignment,
         }
 
        
