@@ -177,7 +177,7 @@ def two_genomes():
          try: 
             pair_analysis = AlignmentAnalysis(pair_analysis_dic)
             results_align= pair_analysis.pairwise_alignment(seq_ID_1,seq_ID_2)
-            message = f'Alignment results for{seq_ID_1} and {seq_ID_2}:'
+            message = f'Alignment results for {seq_ID_1} and {seq_ID_2}:'
             return render_template("results.html", results_align=results_align, message=message)
          except ValueError:
             flash("Please introduce a valid input")

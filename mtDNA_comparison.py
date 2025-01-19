@@ -85,72 +85,19 @@ class AlignmentAnalysis:
         
         seq1 = str(self.sequences[seq_id_1])
         seq2 = str(self.sequences[seq_id_2])
+
         aligner = PairwiseAligner()
 
+        aligner.mode = "global"
+        alignments = aligner.align(seq1, seq2)
+        alignment = alignments[0]
+     
+
         score = aligner.score(seq1, seq2)
+  
+        return {
+            "score": score,
+            "alignment vizualization": alignment,
+        }
 
-        
-        # return {
-        #     "score": score,
-        #     "alignment vizualization": ,
-        # }
-
-        # aligner = PairwiseAligner()
-        # aligner.mode = "global"
-
-        # # Perform alignment
-        # alignments = aligner.align(seq1, seq2)
-        # alignment = alignments[0]
-
-        # # Extract aligned sequences with gaps
-        # aligned_seq1 = []
-        # aligned_seq2 = []
-        # for (start1, end1), (start2, end2) in zip(alignment.aligned[0], alignment.aligned[1]):
-        #     aligned_seq1.append(seq1[start1:end1])
-        #     aligned_seq2.append(seq2[start2:end2])
-
-        # # Join fragments to create full aligned sequences
-        # aligned_seq1 = ''.join(aligned_seq1)
-        # aligned_seq2 = ''.join(aligned_seq2)
-
-        # # Generate matches visualization including gaps
-        # matches = []
-        # for base1, base2 in zip(aligned_seq1, aligned_seq2):
-        #     if base1 == "-" or base2 == "-":
-        #         matches.append("-")  # Represent gaps with space
-        #     else:
-        #         matches.append("|" if base1 == base2 else "")
-        # print(matches)
-        # # Create the visualized matches string
-        # matches_str = "".join(matches)
-
-        # # Split into blocks of defined width
-        # def split_str(sequence, width=80):
-        #     return [sequence[i : i + width] for i in range(0, len(sequence), width)]
-        
-        # seq1_lines = split_str(aligned_seq1, width)
-        # matches_lines = split_str(matches_str, width)
-        # seq2_lines = split_str(aligned_seq2, width)
-        
-        # # Format the output
-        # formatted = []
-        # for line_1, line_match, line_2 in zip(seq1_lines, matches_lines, seq2_lines):
-        #     formatted.append(line_1)
-        #     formatted.append(line_match)
-        #     formatted.append(line_2)
-        #     formatted.append("")  # Add a blank line between blocks
-
-        # # Return the alignment and score
-        # return {
-        #     "score": alignment.score,
-        #     "alignment vizualization": "\n".join(formatted),
-        # }
-
-# Test data
-sequences = {
-    "seq1": "ACTGACTGACTG",
-    "seq2": "ACTGACCGACTG",
-}
-
-seq_analysis = AlignmentAnalysis(sequences)
-print(seq_analysis.pairwise_alignment("seq1","seq2"))
+       
