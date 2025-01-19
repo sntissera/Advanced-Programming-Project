@@ -121,11 +121,10 @@ def one_genome():
                results = f"position(s) index: {', '.join(map(str, motif_index))}"
                results2 = f"motif occurance count: {len(motif_index)}"
                results3 = f"distribution: {genome_analysis_motif.distribution()}"
-               results4 = genome_analysis_motif.visualize_motif()
                results_align = {}
             else: 
                results = motif_index
-            return render_template("results.html", results=results, results2=results2, results3=results3, results4=results4, results_align=results_align, message=message)
+            return render_template("results.html", results=results, results2=results2, results3=results3, results_align=results_align, message=message)
          except ValueError: 
             flash("Please introduce a valid motif")
             return redirect(url_for('one_genome'))
