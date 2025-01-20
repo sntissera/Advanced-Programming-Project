@@ -23,22 +23,6 @@ class ComparativeAnalysis:
                 "GC Content": seq_gc,
             }
         return summaries
-        
-    # def summarize_findings(self):
-    #     """
-    #     Create a summary findings dictionary with longest/shortest sequence and highest/lowest GC content.
-    #     """
-    #     summaries = self.summary()
-    
-    #     summary_comparison = {}
-    #     summary_comparison["longest"] = max(summaries.items(), key=lambda x: x[1]['Length'])
-    #     summary_comparison["shortest"] = min(summaries.items(), key=lambda x: x[1]['Length'])
-    #     summary_comparison["highest_gc"] = max(summaries.items(), key=lambda x: x[1]['GC Content'])
-    #     summary_comparison["lowest_gc"] = min(summaries.items(), key=lambda x: x[1]['GC Content'])
-
-    #     return summary_comparison
-    
-
 
 class ConservedMotifs:
     def __init__(self, sequences):
