@@ -24,9 +24,9 @@ Once a compatible file is submitted, the user is brought to the **Genome Selecti
 The names of all the genomes present in the file are displayed and the user can choose to analyze one, two, or all the genomes in the file.
 
 ### Single Genome Analysis
-When *‘one genome’* is selected, the user chooses the genome to be analyzed; then, he selects the analysis to be performed from all the available options:
+When *‘one genome’* is selected, users choose the genome to be analyzed; /_*genome name selection example*/_: ![input example](documentation/input.png)
 
-genome name selection example: ![input example](documentation/input.png)
+Then, he selects the analysis to be performed from all the available options:
 * **GC Content and Length Analysis**: using the `MitochondrialDna` class, it summarizes GC content and length of the genome selected;
 output example: ![out example](documentation/input.png)
 * **Subsequence Extraction**: inputing the start and end indexes, it extracts a subsequence, prints it, and calculates its GC content and length using the `MitochondrialDna` class;
@@ -81,7 +81,20 @@ Common operations, like GC content and length calculation or motif searching, we
 The codebase is structured to allow easy addition of new analysis features.
 
 ### Working Flow of the Software
-The ***’main.py’* file** is the heart of the application, since it provides web integration for the software. The core genomics analysis logic was decoupled from the web interface logic, improving maintainability of the whole code and allowing for a clear separation of concerns.
+The ***’main.py’* file** is the heart of the application, since it provides web integration for the software. The core genomics analysis logic was decoupled from the web interface logic, improving maintainability of the whole code and allowing for a clear separation of concerns. 
+
+The HTML code for the web interface is located in the repository under the *'templates'* folder. The development follows a modular structure, with each file serving a specific role:
+
+* `base.html`: the main file that provides the basic layout and shared elements for all pages; serves as the foundation for all other pages
+* `index.html`: the Home Page where users can upload their genomic data files;
+* `choose_analysis.html`: the Genome Selection Page where the uploaded genomes are displayed and users choose the type of analysis to perform;
+* `one_genome.html`: provides options for analyzing a single genome, such as GC content and motif analysis; performs those actions based on the user's input;
+* `two_genomes.html`: allows comparison between two selected genomes, highlighting differences and similarities through different actions based on the user's input;
+* `all_genomes.html`: provides analysis across all uploaded genomes, identifying differences and similarities, conserved features and variations;
+* `results.html`: displays the results in a textual format for analyses that do not require tabular representation;
+* `results_table.html`: presents the results in a tabular format, for comparisons and summary data.
+
+The HTML development leverages **Bootstrap**, an open-source front-end framework that helps designing responsive and visually appealing websites. Its collection of components and its grid system ensure consistency and scalability to the code.
 
 *Flask* library was chosen to handle requests and route them to the corresponding functions, providing seamless interaction between the backend template logic and frontend HTML elements. Here’s a breakdown of its working flow:
 
@@ -112,4 +125,8 @@ Potential enhancements include:
 * Adding support for more file formats
 * Expanding analysis features
 * Improving visualization capabilities
+
+## Authors
+This project was developed by Carolina Cretu, Saraya Tissera, Sofia Pasquale, and Raissa Costea as part of the Advanced Programming exam for the Genomics Bachelor's program at the University of Bologna.
+
 
