@@ -49,7 +49,7 @@ In order to run the scripts in this repository, the following first steps will n
 1. Download and install the Python software IDE of preference;
 2. Clone/Fork the repository to a folder of preference;
 3. Open all the files through the preferred IDE;
-4. Launch the Flask server;
+4. Run the *main.py* script;
 5. Access the web interface (at [http://localhost:5000]).
 
 To properly run the software in Python, the following dependencies are needed:
