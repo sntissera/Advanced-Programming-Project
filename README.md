@@ -23,13 +23,17 @@ The file is processed using the *`MitochondrialDNAParser`* class.
 Once a compatible file is submitted, the user is brought to the **Genome Selection Page**.
 The names of all the genomes present in the file are displayed and the user can choose to analyze one, two, or all the genomes in the file.
 
-### Single Genome Analysis
-When *‘one genome’* is selected, users choose the genome to be analyzed; /_*genome name selection example*/_: ![input example](documentation/input.png)
+*genomes display example*: ![genomes display example](documentation/NamesGenomes.png)
 
-Then, he selects the analysis to be performed from all the available options:
+### Single Genome Analysis
+When *‘one genome’* is selected, users choose the genome to be analyzed; *genome name selection example*: ![input example](documentation/input.png)
+
+Then, they select the analysis to be performed from all the available options:
 * **GC Content and Length Analysis**: using the `MitochondrialDna` class, it summarizes GC content and length of the genome selected;
-output example: ![out example](documentation/input.png)
+  *output example*: ![output example](documentation/GCOutput.png)
 * **Subsequence Extraction**: inputing the start and end indexes, it extracts a subsequence, prints it, and calculates its GC content and length using the `MitochondrialDna` class;
+  *input example:* ![input example](documentation/InputSubseq.png)
+  *output example:* ![output example](documentation/SubseqOutput.png)
 * **Motif search**: searches for a specific motif, given as input by the user, identifies its positions, occurrence count, and distribution using the `GenomicMotif` class;
 * **Sequence Alignment**: aligns the input sequence with an external sequence, provided by the user through a second input.
 
