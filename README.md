@@ -61,8 +61,6 @@ To properly run the software in Python, the following dependencies are needed:
 * werkzeug.utils
 * pandas
 * Bio
-* math
-* matplotlib
 
 ## Development Process
 ### Modular Approach
