@@ -38,27 +38,45 @@ Then, they select the analysis to be performed from all the available options:
 * **Subsequence Extraction**: inputing the start and end indexes, it extracts a subsequence, prints it, and calculates its GC content and length using the `MitochondrialDna` class;
 
   *input example:* ![input example](documentation/InputSubseq.png)
+  
   *output example:* ![output example](documentation/SubseqOutput.png)
   
 * **Motif search**: searches for a specific motif, given as input by the user, identifies its positions, occurrence count, and distribution using the `GenomicMotif` class;
 
   *input example:* ![input example](documentation/MotifInput.png)
+  
   *output example:* ![output example](documentation/MotifOutput.png)
   
 * **Sequence Alignment**: aligns the input sequence with an external sequence, provided by the user through a second input.
+
+  *input example:* ![input example](documentation/Align1Input.png)
+  
+  *output example:* ![output example](documentation/Align1Output.png)
 
 ### Two Genome Analysis
 When *‘two genomes’* is selected, the user chooses the two genomes to be analyzed; then, he selects the analysis to be performed from all the available options:
 
 * **General Comparison**: using the `ComparativeAnalysis` class, it conducts comparative analysis on the GC content and length of the genomes selected;
+
+  *output example:* ![output example](documentation/GC2Output.png)
+  
 * **Motif Search across two genomes**: it identifies a conserved motif inputted by the user and its positions in each genome using the `ConservedMotifs` class;
+
+  *output example:* ![output example](documentation/Motif2Output.png)
+  
 * **Pairwise Sequence Alignment**: using the `AlignmentAnalysis`  class, it performs alignment operations between the sequences of the two selected genomes and provides the alignment score of the two sequences.
+
+  *output example:* ![output example](documentation/Align2Output.png)
 
 ### All Genome Analysis
 
 * **GC Content and Length Comparison**: using the `ComparativeAnalysis` class, it compares the GC content and length of all the sequences present in the uploaded file;
+
+  *output example:* ![output example](documentation/GCAllOutput.png)
+  
 * **Motif Search across all genomes**: using the `ConservedMotifs` class, it detects a conserved motif inputted by the user and its occurrences across all genomes.
 
+  *output example:* ![output example](documentation/MotifAllOutput.png)
 
 ## Installation
 In order to run the scripts in this repository, the following first steps will need to be ensured:
