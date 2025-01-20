@@ -63,7 +63,7 @@ Common operations, like GC content and length calculation or motif searching, we
 The codebase is structured to allow easy addition of new analysis features.
 
 ### Working Flow of the Software
-The ***’main.py’* file** is the heart of the application, since it provides web integration for the software. Indeed, the core genomics analysis logic was decoupled from the web interface logic, improving maintainability of the whole code and allowing for a clear separation of concerns.
+The ***’main.py’* file** is the heart of the application, since it provides web integration for the software. The core genomics analysis logic was decoupled from the web interface logic, improving maintainability of the whole code and allowing for a clear separation of concerns.
 
 *Flask* library was chosen to handle requests and route them to the corresponding functions, providing seamless interaction between the backend template logic and frontend HTML elements. Here’s a breakdown of its working flow:
 
