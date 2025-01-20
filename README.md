@@ -88,7 +88,7 @@ The ***’main.py’* file** is the heart of the application, since it provides 
 *  In case of a single-genome analysis, the methods used belong to the  `MitochondrialDna` and `GenomicMotif` classes (*‘mtDNA.py’* file);
 *  In case of a two-genomes or all-genomes analysis, the methods used belong to the `ComparativeAnalysis`, `ConservedMotifs`, or `AlignmentAnalysis` classes (*‘mtDNA_comparison.py’* file).
 4. Results are displayed dynamically on the webpage:
-*  Each page corresponds to a Flask route (*/upload, /analyze_single, /analyze_pairwise, /analyze_all*, etc.);
+*  Each page corresponds to a Flask route (*/upload, /choose_analysis, /one_genome, /two_genomes, /all_genomes*, etc.);
 *  Data is passed between routes via Flask's request and session objects.
 
 Extensive testing was performed to validate the accuracy of results and the stability of the web interface.
