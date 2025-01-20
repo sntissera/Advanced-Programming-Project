@@ -28,7 +28,7 @@ When *‘one genome’* is selected, the user chooses the genome to be analyzed;
 
 genome name selection example: ![input example](documentation/input.png)
 * **GC Content and Length Analysis**: using the `MitochondrialDna` class, it summarizes GC content and length of the genome selected;
-output exapmle: ![out example](documentation/input.png)
+output example: ![out example](documentation/input.png)
 * **Subsequence Extraction**: inputing the start and end indexes, it extracts a subsequence, prints it, and calculates its GC content and length using the `MitochondrialDna` class;
 * **Motif search**: searches for a specific motif, given as input by the user, identifies its positions, occurrence count, and distribution using the `GenomicMotif` class;
 * **Sequence Alignment**: aligns the input sequence with an external sequence, provided by the user through a second input.
@@ -113,4 +113,3 @@ Potential enhancements include:
 * Expanding analysis features
 * Improving visualization capabilities
 
-We welcome feedback and contributions! Please submit issues or pull requests on our GitHub repository. 
