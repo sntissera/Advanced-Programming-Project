@@ -25,7 +25,7 @@ The names of all the genomes present in the file are displayed and the user can 
 
 ### Single Genome Analysis
 When *‘one genome’* is selected, the user chooses the genome to be analyzed; then, he selects the analysis to be performed from all the available options:
-
+![input example](input.png)
 * **GC Content and Length Analysis**: using the `MitochondrialDna` class, it summarizes GC content and length of the genome selected;
 * **Subsequence Extraction**: inputing the start and end indexes, it extracts a subsequence, prints it, and calculates its GC content and length using the `MitochondrialDna` class.
 * **Motif search**: searches for a specific motif, given as input by the user, identifies its positions, occurrence count, and distribution using the `GenomicMotif` class.
