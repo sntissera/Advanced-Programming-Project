@@ -29,8 +29,9 @@ When *‘one genome’* is selected, the user chooses the genome to be analyzed;
 genome name selection example: ![input example](documentation/input.png)
 * **GC Content and Length Analysis**: using the `MitochondrialDna` class, it summarizes GC content and length of the genome selected;
 output exapmle: ![out example](documentation/input.png)
-* **Subsequence Extraction**: inputing the start and end indexes, it extracts a subsequence, prints it, and calculates its GC content and length using the `MitochondrialDna` class.
-* **Motif search**: searches for a specific motif, given as input by the user, identifies its positions, occurrence count, and distribution using the `GenomicMotif` class.
+* **Subsequence Extraction**: inputing the start and end indexes, it extracts a subsequence, prints it, and calculates its GC content and length using the `MitochondrialDna` class;
+* **Motif search**: searches for a specific motif, given as input by the user, identifies its positions, occurrence count, and distribution using the `GenomicMotif` class;
+* **Sequence Alignment**: aligns the input sequence with an external sequence, provided by the user through a second input.
 
 ### Two Genome Analysis
 When *‘two genomes’* is selected, the user chooses the two genomes to be analyzed; then, he selects the analysis to be performed from all the available options:
@@ -87,7 +88,7 @@ The ***’main.py’* file** is the heart of the application, since it provides 
 1. The *‘mtDNA_parser.py’* file and its class are initialized to parse uploaded FASTA/txt files. File integrity is validated; genome sequences are extracted into structured data and stored in memory, ready for downstream analysis and visualization.
 2. The web interface presents the genome names parsed from the uploaded file. The user selects the number of sequences to analyze (1, 2, or all).
 3. Depending on user input, the selected genome/s is/are analyzed:
-*  In case of a single-genome analysis, the methods used belong to the  `MitochondrialDna` and `GenomicMotif` classes (*‘mtDNA.py’* file);
+*  In case of a single-genome analysis, the methods used belong to the  `MitochondrialDna` and `GenomicMotif` classes (*‘mtDNA.py’* file), or to the `AlignmentAnalysis` class (*mtDNA_comparison.py* file);
 *  In case of a two-genomes or all-genomes analysis, the methods used belong to the `ComparativeAnalysis`, `ConservedMotifs`, or `AlignmentAnalysis` classes (*‘mtDNA_comparison.py’* file).
 4. Results are displayed dynamically on the webpage:
 *  Each page corresponds to a Flask route (*/upload, /choose_analysis, /one_genome, /two_genomes, /all_genomes*, etc.);
@@ -101,10 +102,9 @@ Robust **error-handling mechanisms** were incorporated to ensure a smooth user e
 * **Runtime errors**: catches unexpected errors during analysis (for example empty sequences, incompatible alignments, etc.) and displays informative messages without crashing the application.
 
 ## Development Resources
-To support the development and provide a clear overview of the software's architecture, **CRC cards** and **UML diagrams** were created. These resources outline the structure, responsibilities, and relationships between classes, offering further details on the design choices made during implementation. Here’s a link to the resources:
+To support the development and provide a clear overview of the software's architecture, **CRC cards** and **UML diagrams** were created. These resources outline the structure, responsibilities, and relationships between classes, offering further details on the design choices made during implementation.
 
-* **CRC Cards**: [CRC Cards.pdf]
-* **UML Diagrams**: [https://lucid.app/lucidchart/db43d4c6-5857-4bf3-9cea-106c867fb4eb/edit?viewport_loc=-1351%2C-357%2C1929%2C1059%2C0_0&invitationId=inv_bd977480-95fc-47f2-b006-2f8daf0c6ebc]
+These additional development resources can be found in the *documentation* folder of this repository.
 
 ## Future Work
 Potential enhancements include:
