@@ -44,8 +44,25 @@ When *‘two genomes’* is selected, the user chooses the two genomes to be ana
 
 
 ## Installation
-In order to run the software, the user will need to ensure to have *Python 3.12* installed on their system, as well as all the required dependencies (pip, Flask, etc.).
-After cloning the repository, the user will be able to launch the Flask server and access the web interface at [http://localhost:5000].
+In order to run the scripts in this repository, the following first steps will need to be ensured:
+
+1. Download and install the Python software IDE of preference;
+2. Clone/Fork the repository to a folder of preference;
+3. Open all the files through the preferred IDE;
+4. Launch the Flask server;
+5. Access the web interface (at [http://localhost:5000]).
+
+To properly run the software in Python, the following dependencies are needed:
+
+* Python (version 3.12 is reccomanded)
+* pip
+* flask
+* os
+* werkzeug.utils
+* pandas
+* Bio
+* math
+* matplotlib
 
 ## Development Process
 ### Modular Approach
