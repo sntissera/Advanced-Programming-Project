@@ -17,7 +17,7 @@ Finally, users can run specific analyses; sometimes, they are required to follow
 
 ### Home Page
 On the **Home Page**, the user can upload a file containing mitochondrial genome data; supported extensions include *.FASTA* and *.txt*. 
-The file is processed using the *‘mtDNA_parser’* class.
+The file is processed using the *`MitochondrialDNAParser`* class.
 
 ### Genome Selection Page
 Once a compatible file is submitted, the user is brought to the **Genome Selection Page**.
