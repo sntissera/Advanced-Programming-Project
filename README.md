@@ -28,7 +28,7 @@ When *‘one genome’* is selected, the user chooses the genome to be analyzed;
 
 * **GC Content and Length Analysis**: using the `MitochondrialDna` class, it summarizes GC content and length of the genome selected;
 * **Subsequence Extraction**: inputing the start and end indexes, it extracts a subsequence, prints it, and calculates its GC content and length using the `MitochondrialDna` class.
-* **Motif search**: searches for a specific motif, given as input by the user, identifies its positions and occurrence count using the `GenomicMotif` class.
+* **Motif search**: searches for a specific motif, given as input by the user, identifies its positions, occurrence count, and distribution using the `GenomicMotif` class.
 
 ### Two Genome Analysis
 When *‘two genomes’* is selected, the user chooses the two genomes to be analyzed; then, he selects the analysis to be performed from all the available options:
