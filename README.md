@@ -103,6 +103,7 @@ Robust **error-handling mechanisms** were incorporated to ensure a smooth user e
 
 ## Development Resources
 To support the development and provide a clear overview of the software's architecture, **CRC cards** and **UML diagrams** were created. These resources outline the structure, responsibilities, and relationships between classes, offering further details on the design choices made during implementation.
+
 These additional development resources can be found in the *documentation* folder of this repository.
 
 ## Future Work
