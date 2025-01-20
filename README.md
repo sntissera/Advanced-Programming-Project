@@ -1,4 +1,4 @@
-# Advanced-Programming Project - Mitochondrial Genome Analysis Software
+# AP Project - Mitochondrial Genome Analysis Software
 
 ## Overview
 This software is designed to analyze mitochondrial genomes. Its analysis includes:
@@ -26,15 +26,25 @@ The names of all the genomes present in the file are displayed and the user can 
 *genomes display example*: ![genomes display example](documentation/NamesGenomes.png)
 
 ### Single Genome Analysis
-When *‘one genome’* is selected, users choose the genome to be analyzed; *genome name selection example*: ![input example](documentation/input.png)
+When *‘one genome’* is selected, users choose the genome to be analyzed;
+
+*genome name selection example*: ![input example](documentation/input.png)
 
 Then, they select the analysis to be performed from all the available options:
 * **GC Content and Length Analysis**: using the `MitochondrialDna` class, it summarizes GC content and length of the genome selected;
-  *output example*: ![output example](documentation/GCOutput.png)
+
+   *output example*: ![output example](documentation/GCOutput.png)
+  
 * **Subsequence Extraction**: inputing the start and end indexes, it extracts a subsequence, prints it, and calculates its GC content and length using the `MitochondrialDna` class;
+
   *input example:* ![input example](documentation/InputSubseq.png)
   *output example:* ![output example](documentation/SubseqOutput.png)
+  
 * **Motif search**: searches for a specific motif, given as input by the user, identifies its positions, occurrence count, and distribution using the `GenomicMotif` class;
+
+  *input example:* ![input example](documentation/MotifInput.png)
+  *output example:* ![output example](documentation/MotifOutput.png)
+  
 * **Sequence Alignment**: aligns the input sequence with an external sequence, provided by the user through a second input.
 
 ### Two Genome Analysis
