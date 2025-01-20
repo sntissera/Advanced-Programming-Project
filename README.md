@@ -101,7 +101,7 @@ Robust **error-handling mechanisms** were incorporated to ensure a smooth user e
 ## Development Resources
 To support the development and provide a clear overview of the software's architecture, **CRC cards** and **UML diagrams** were created. These resources outline the structure, responsibilities, and relationships between classes, offering further details on the design choices made during implementation. Here’s a link to the resources:
 
-* **CRC Cards**: [https://docs.google.com/document/d/1YfmBzMQvhpKvkv6BvpIMIw084uMRYt5ZU8U8KHi1SFs/edit?usp=sharing]
+* **CRC Cards**: [CRC Cards.pdf]
 * **UML Diagrams**: [https://lucid.app/lucidchart/db43d4c6-5857-4bf3-9cea-106c867fb4eb/edit?viewport_loc=-1351%2C-357%2C1929%2C1059%2C0_0&invitationId=inv_bd977480-95fc-47f2-b006-2f8daf0c6ebc]
 
 ## Future Work
