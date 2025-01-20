@@ -35,7 +35,7 @@ When *‘two genomes’* is selected, the user chooses the two genomes to be ana
 
 * **General Comparison**: using the `ComparativeAnalysis` class, it conducts comparative analysis on the GC content and length of the genomes selected;
 * **Motif Search across two genomes**: it identifies a conserved motif inputted by the user and its positions in each genome using the `ConservedMotifs` class;
-* **Pairwise Sequence Alignment**: using the `AlignmentAnalysis`  class, it performs alignment operations between the sequences of the two selected genomes.
+* **Pairwise Sequence Alignment**: using the `AlignmentAnalysis`  class, it performs alignment operations between the sequences of the two selected genomes and provides the alignment score of the two sequences.
 
 ### All Genome Analysis
 
