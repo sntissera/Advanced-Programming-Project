@@ -17,7 +17,7 @@ Finally, users can run specific analyses; sometimes, they are required to follow
 
 ### Home Page
 On the **Home Page**, the user can upload a file containing mitochondrial genome data; supported extensions include *.FASTA* and *.txt*. 
-The file is processed using the *‘mtDNA_parser’* class.
+The file is processed using the *`MitochondrialDNAParser`* class.
 
 ### Genome Selection Page
 Once a compatible file is submitted, the user is brought to the **Genome Selection Page**.
@@ -28,14 +28,14 @@ When *‘one genome’* is selected, the user chooses the genome to be analyzed;
 
 * **GC Content and Length Analysis**: using the `MitochondrialDna` class, it summarizes GC content and length of the genome selected;
 * **Subsequence Extraction**: inputing the start and end indexes, it extracts a subsequence, prints it, and calculates its GC content and length using the `MitochondrialDna` class.
-* **Motif search**: searches for a specific motif, given as input by the user, identifies its positions and occurrence count using the `GenomicMotif` class.
+* **Motif search**: searches for a specific motif, given as input by the user, identifies its positions, occurrence count, and distribution using the `GenomicMotif` class.
 
 ### Two Genome Analysis
 When *‘two genomes’* is selected, the user chooses the two genomes to be analyzed; then, he selects the analysis to be performed from all the available options:
 
 * **General Comparison**: using the `ComparativeAnalysis` class, it conducts comparative analysis on the GC content and length of the genomes selected;
 * **Motif Search across two genomes**: it identifies a conserved motif inputted by the user and its positions in each genome using the `ConservedMotifs` class;
-* **Pairwise Sequence Alignment**: using the `AlignmentAnalysis`  class, it performs alignment operations between the sequences of the two selected genomes.
+* **Pairwise Sequence Alignment**: using the `AlignmentAnalysis`  class, it performs alignment operations between the sequences of the two selected genomes and provides the alignment score of the two sequences.
 
 ### All Genome Analysis
 
@@ -49,7 +49,7 @@ In order to run the scripts in this repository, the following first steps will n
 1. Download and install the Python software IDE of preference;
 2. Clone/Fork the repository to a folder of preference;
 3. Open all the files through the preferred IDE;
-4. Launch the Flask server;
+4. Run the *main.py* script;
 5. Access the web interface (at [http://localhost:5000]).
 
 To properly run the software in Python, the following dependencies are needed:
@@ -88,7 +88,7 @@ The ***’main.py’* file** is the heart of the application, since it provides 
 *  In case of a single-genome analysis, the methods used belong to the  `MitochondrialDna` and `GenomicMotif` classes (*‘mtDNA.py’* file);
 *  In case of a two-genomes or all-genomes analysis, the methods used belong to the `ComparativeAnalysis`, `ConservedMotifs`, or `AlignmentAnalysis` classes (*‘mtDNA_comparison.py’* file).
 4. Results are displayed dynamically on the webpage:
-*  Each page corresponds to a Flask route (*/upload, /analyze_single, /analyze_pairwise, /analyze_all*, etc.);
+*  Each page corresponds to a Flask route (*/upload, /choose_analysis, /one_genome, /two_genomes, /all_genomes*, etc.);
 *  Data is passed between routes via Flask's request and session objects.
 
 Extensive testing was performed to validate the accuracy of results and the stability of the web interface.
